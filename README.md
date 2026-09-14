@@ -1,69 +1,92 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Stirling-Tools/Stirling-PDF/main/docs/stirling.png" width="80" alt="AziralPDF logo">
-</p>
-
-<h1 align="center">AziralPDF - The Open-Source PDF Platform</h1>
-
-AziralPDF is a powerful, open-source PDF editing platform. Run it as a personal desktop app, in the browser, or deploy it on your own servers with a private API. Edit, sign, redact, convert, and automate PDFs without sending documents to external services.
+<h1 align="center">AziralPDF — self-hosted PDF platform</h1>
 
 <p align="center">
-  <a href="https://hub.docker.com/r/stirlingtools/stirling-pdf">
-    <img src="https://img.shields.io/docker/pulls/frooodle/s-pdf" alt="Docker Pulls">
-  </a>
-  <a href="https://discord.gg/HYmhKj45pU">
-    <img src="https://img.shields.io/discord/1068636748814483718?label=Discord" alt="Discord">
-  </a>
-  <a href="https://scorecard.dev/viewer/?uri=github.com/Stirling-Tools/Stirling-PDF">
-    <img src="https://api.scorecard.dev/projects/github.com/Stirling-Tools/Stirling-PDF/badge" alt="OpenSSF Scorecard">
-  </a>
-  <a href="https://github.com/Stirling-Tools/stirling-pdf">
-    <img src="https://img.shields.io/github/stars/stirling-tools/stirling-pdf?style=social" alt="GitHub Repo stars">
-  </a>
+  <a href="https://github.com/shutovBro/AziralPDF-app/actions/workflows/docker-publish.yml"><img src="https://github.com/shutovBro/AziralPDF-app/actions/workflows/docker-publish.yml/badge.svg?branch=rebrand/aziralpdf" alt="Docker build"></a>
+  <a href="https://github.com/shutovBro/AziralPDF-app/pkgs/container/aziralpdf-app"><img src="https://img.shields.io/badge/ghcr.io-aziralpdf--app-2496ED?logo=docker&logoColor=white" alt="GHCR"></a>
+  <a href="https://huggingface.co/spaces/shutovBro/aziralpdf"><img src="https://img.shields.io/badge/Live_demo-Hugging_Face-FFD21E?logo=huggingface&logoColor=black" alt="Live demo"></a>
+  <img src="https://img.shields.io/badge/Java-25-ED8B00?logo=openjdk&logoColor=white" alt="Java 25">
+  <img src="https://img.shields.io/badge/Spring_Boot-6DB33F?logo=springboot&logoColor=white" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/React-TypeScript-61DAFB?logo=react&logoColor=black" alt="React + TypeScript">
 </p>
+
+AziralPDF is a self-hosted PDF editing platform: view, annotate, sign, redact,
+merge, split, compress, convert and automate PDFs — in the browser, as a desktop
+app, or as a private REST API. Documents never leave your infrastructure.
+
+**Live demo:** https://huggingface.co/spaces/shutovBro/aziralpdf
+*(free CPU Space, ultra-lite build: no OCR / Office conversions, 50 MB upload cap)*
+
+AziralPDF is a branded distribution of the MIT-licensed
+[Stirling-PDF](https://github.com/Stirling-Tools/Stirling-PDF) engine, maintained
+on the [`rebrand/aziralpdf`](https://github.com/shutovBro/AziralPDF-app/tree/rebrand/aziralpdf)
+branch: AZIRAL branding and Russian localisation, the upstream update feed
+disabled, `robots.txt` served, and a GHCR/Hugging Face deployment pipeline.
+Upstream credits and licences are kept in [NOTICE.md](NOTICE.md) and [LICENSE](LICENSE).
 
 ![AziralPDF - Dashboard](images/home-light.png)
 
-## Key Capabilities
+## Key capabilities
 
-- **Everywhere you work** - Desktop client, browser UI, and self-hosted server with a private API.
-- **50+ PDF tools** - Edit, merge, split, sign, redact, convert, OCR, compress, and more.
-- **Automation & workflows** - No-code pipelines direct in UI with APIs to process millions of PDFs.
-- **Enterprise‑grade** - SSO, auditing, and flexible on‑prem deployments.
-- **Developer platform** - REST APIs available for nearly all tools to integrate into your existing systems.
-- **Global UI** - Interface available in 40+ languages.
+- **Everywhere you work** — desktop client (Tauri), browser UI, and self-hosted server with a private API.
+- **50+ PDF tools** — edit, merge, split, sign, redact, convert, OCR, compress, watermark, and more.
+- **Automation & workflows** — no-code pipelines in the UI, REST endpoints for every tool.
+- **Enterprise-grade** — SSO/SAML, audit log, flexible on-prem deployment.
+- **Global UI** — 40+ languages.
 
-For a full feature list, see the docs: **https://docs.stirlingpdf.com**
+## Architecture
 
-## Quick Start
-
-```bash
-docker run -p 8080:8080 docker.stirlingpdf.com/stirlingtools/stirling-pdf
+```mermaid
+flowchart LR
+    subgraph Frontend["frontend/ (React · TypeScript · Vite)"]
+        UI[editor UI · pdf.js · pdf-lib]
+    end
+    subgraph Backend["app/ (Java 25 · Spring Boot · Gradle)"]
+        API[REST API · OpenAPI]
+        Core[core: PDFBox · qpdf · Ghostscript]
+        Prop[proprietary: SSO · audit · licensing]
+    end
+    UI -->|/api/v1| API
+    API --> Core
+    API --> Prop
+    Core -.->|optional| Uno[unoserver / LibreOffice]
+    Core -.->|optional| OCR[Tesseract / ocrmypdf]
+    Desktop[Tauri desktop app] --> UI
 ```
 
-Then open: http://localhost:8080
+Images: `docker/embedded/Dockerfile` (full), `Dockerfile.fat` (all converters bundled),
+`Dockerfile.ultra-lite` (Java + embedded frontend only — what the demo runs).
 
-For full installation options (including desktop and Kubernetes), see our [Documentation Guide](https://docs.stirlingpdf.com/#documentation-guide).
+## Quick start
 
-## Resources
+```bash
+# Prebuilt image (ultra-lite, built from this repository by GitHub Actions)
+docker run -p 8080:8080 ghcr.io/shutovbro/aziralpdf-app:latest
 
-- [**Documentation**](https://docs.stirlingpdf.com)
-- [**Homepage**](https://stirling.com)
-- [**API Docs**](https://registry.scalar.com/@stirlingpdf/apis/stirling-pdf-processing-api/)
-- [**Server Plan & Enterprise**](https://docs.stirlingpdf.com/Paid-Offerings)
+# Full image with OCR + Office conversions, from source
+docker compose -f docker/compose/docker-compose.yml up -d
+```
 
-## Support
+Then open http://localhost:8080.
 
-- **Community** [Discord](https://discord.gg/HYmhKj45pU)
-- **Bug Reports**: [Github issues](https://github.com/Stirling-Tools/Stirling-PDF/issues)
+### Development
 
-## Contributing
+```bash
+task install     # https://taskfile.dev — installs backend + frontend tooling
+task dev         # backend on :8080, Vite dev server on :5173
+```
 
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+See [DeveloperGuide.md](DeveloperGuide.md), [ADDING_TOOLS.md](ADDING_TOOLS.md)
+and [CONTRIBUTING.md](CONTRIBUTING.md) for the full workflow, and
+[docs/](docs) for deployment notes (Uptime Kuma, security, data extraction).
 
-This project uses [Task](https://taskfile.dev/) as a unified command runner for all build, dev, and test commands. Run `task install` to get started, or see the [Developer Guide](DeveloperGuide.md) for full details.
+## Deployment
 
-For adding translations, see the [Translation Guide](devGuide/HowToAddNewLanguage.md).
+| Target | How |
+|---|---|
+| GHCR image | `.github/workflows/docker-publish.yml` builds `Dockerfile.ultra-lite` on every push and tags `latest` + `sha-<commit>` |
+| Hugging Face demo | second job of the same workflow pushes `deploy/huggingface/` to the Space in the `HF_SPACE` variable |
+| Kubernetes / bare metal | see the upstream [documentation](https://docs.stirlingpdf.com) — configuration keys are unchanged |
 
 ## License
 
-AziralPDF is open-core. See [LICENSE](LICENSE) for details.
+Open-core: MIT for the core, see [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md).
