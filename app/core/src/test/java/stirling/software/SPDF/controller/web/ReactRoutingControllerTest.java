@@ -179,4 +179,25 @@ class ReactRoutingControllerTest {
         assertNotNull(body);
         assertTrue(body.contains("<base href="));
     }
+
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.ValueSource(
+            strings = {
+                "/billing/halyk/00000000-0000-0000-0000-000000000000",
+                "/workflow/sign/test-token"
+            })
+    void threeSegmentPublicRoutesServeTheFrontendShell(String path) throws Exception {
+        controller.init();
+        var mvc =
+                org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup(
+                                controller)
+                        .build();
+        mvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get(path))
+                .andExpect(
+                        org.springframework.test.web.servlet.result.MockMvcResultMatchers.status()
+                                .isOk())
+                .andExpect(
+                        org.springframework.test.web.servlet.result.MockMvcResultMatchers.content()
+                                .contentTypeCompatibleWith(MediaType.TEXT_HTML));
+    }
 }
