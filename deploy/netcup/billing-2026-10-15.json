@@ -1,0 +1,73 @@
+{
+  "feature": "AziralPDF prepaid Pro subscriptions",
+  "state": "deployed and verified; checkout disabled pending merchant onboarding",
+  "imageTag": "aziralpdf:billing-20261015-r2",
+  "sourceOverlaySha256": "5f566ebec5ccae6c1de26933362220706079f44c574f6d89e9e16787c6b7389c",
+  "localVerification": {
+    "backendCheck": "passed",
+    "backendTests": 3194,
+    "backendPassed": 3097,
+    "backendSkippedExisting": 97,
+    "backendFailures": 0,
+    "frontendCheck": "passed after scrolling correction",
+    "frontendTestsPassed": 728,
+    "newPaymentTests": {
+      "backend": 19,
+      "frontend": 8
+    }
+  },
+  "ciRuns": 0,
+  "actualGatewayVerification": "not run: no merchant account or merchant keys",
+  "liveBilling": false,
+  "automaticRenewal": false,
+  "applePay": {
+    "flag": false,
+    "verifiedOnDevice": false,
+    "activation": "provider onboarding required"
+  },
+  "setupFile": "freedompay-setup.json",
+  "paymentTermsVersion": "prepaid-v1",
+  "r1ImageId": "sha256:90aef7d173d3257e892fdbc3abf23326434ea6f83e2bc9d05f0d9971e1477585",
+  "productionSmoke": {
+    "accountsPreserved": {
+      "enabledUsers": 8,
+      "usersFingerprint": "da1776b43f5dcfbbe88f46d3097af9eaece015fec144a9ee89a925b604bd7e26",
+      "licenseTier": "FREE"
+    },
+    "publicAndProtectedRoutes": {
+      "/pricing": 200,
+      "/api/v1/billing/catalog": 200,
+      "/api/v1/billing/payments": 401,
+      "/api/v1/billing/payments/unknown": 401,
+      "check": 503,
+      "result": 503
+    },
+    "anonymousCheckout": 401,
+    "authenticatedHistory": "empty",
+    "foreignOrUnknownOrder": 404,
+    "health": 200,
+    "livePaymentsEnabled": false
+  },
+  "responsiveCheck": {
+    "desktop": [
+      1280,
+      900
+    ],
+    "mobile": [
+      375,
+      812
+    ],
+    "theme": "dark",
+    "horizontalOverflow": false,
+    "verticalScrolling": "verified in deployed version",
+    "screenshots": [
+      "screenshots/pricing-desktop.jpg",
+      "screenshots/pricing-mobile.jpg"
+    ]
+  },
+  "imageId": "sha256:24a4f60fd362d3e0942918acbd3f108d9009b43ccc2795e8da540a0b3dddb740",
+  "verifiedAt": "2026-10-15T14:55:03.729779+00:00",
+  "mailFrom": "AziralPDF <noreply@aziral.com>",
+  "databaseBackup": "/opt/aziralpdf/backups/configs-before-billing-20261015.tgz",
+  "builderStopped": true
+}

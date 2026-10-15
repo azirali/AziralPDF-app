@@ -216,8 +216,8 @@ export function setUserLanguage(language: string): void {
 /**
  * Updates the supported languages list dynamically based on config
  * If configLanguages is null/empty, all languages remain available
- * Otherwise, only the specified languages are enabled with the first valid
- * option (preferring en-GB when present) used as the fallback language.
+ * Otherwise, only the specified languages can be selected. English remains
+ * available internally so incomplete translations never expose message keys.
  *
  * @param configLanguages - Optional array of language codes from server config (ui.languages)
  * @param defaultLocale - Optional default language for new users (system.defaultLocale)
@@ -236,8 +236,9 @@ export function updateSupportedLanguages(
       : null;
 
   if (!configLanguages || configLanguages.length === 0) {
-    // No filter specified - keep all languages
-    // But still apply default locale if provided and user has no preference
+    i18n.options.supportedLngs = Object.keys(supportedLanguages);
+    i18n.options.fallbackLng = "en-GB";
+    // Apply the server default without overriding a user's saved preference.
     if (validDefault) {
       applyDefaultLocale(validDefault);
     }
@@ -261,18 +262,19 @@ export function updateSupportedLanguages(
         ? "en-GB"
         : validLanguages[0];
 
-  i18n.options.supportedLngs = validLanguages;
-  i18n.options.fallbackLng = fallback;
+  i18n.options.supportedLngs = [...new Set([...validLanguages, "en-GB"])];
+  i18n.options.fallbackLng = "en-GB";
 
   // If current language is not in the new supported list, switch to fallback with higher priority to override browser detection
   const currentLang = normalizeLanguageCode(i18n.language || "");
   if (currentLang && !validLanguages.includes(currentLang)) {
     // Use ServerDefault priority to override browser detection when language not in whitelist
     setLanguageWithPriority(fallback, LanguageSource.ServerDefault);
-  } else if (validDefault) {
+  } else if (validDefault && validLanguages.includes(validDefault)) {
     // Apply server default (respects user choice if already set)
     setLanguageWithPriority(validDefault, LanguageSource.ServerDefault);
   }
+  void i18n.changeLanguage(i18n.language);
 }
 
 /**

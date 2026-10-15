@@ -13,6 +13,7 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import LocalIcon from "@app/components/shared/LocalIcon";
 import { alert as showToast } from "@app/components/toast";
 import { useAuth } from "@app/auth/UseSession";
@@ -459,6 +460,9 @@ const AccountSection: React.FC = () => {
               {t(planBadge.nameKey, planBadge.fallback)}
             </Badge>
           </Group>
+          <Button component={Link} to="/settings/plan" variant="light" mih={44}>
+            {t("aziralBilling.managePlan")}
+          </Button>
         </Stack>
       </Paper>
 

@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-15",
+  "url": "https://pdf.aziral.com",
+  "server": "89.58.7.87",
+  "remote_directory": "/opt/aziralpdf",
+  "source_repository": "https://github.com/azirali/AziralPDF-app",
+  "source_revision": "3257ffb3fed8c6a2071e8b7f84a50ca61028eba4",
+  "application_version": "2.12.0",
+  "image": "aziralpdf:3257ffb3f",
+  "image_id": "sha256:06040abdc5d2e95ff0c6c178728ca492c0936318bc1403ec1d162c57df67a79e",
+  "backup_date": "2026-08-12",
+  "backup_sha256": "4f94b9217dce8e746412eeaf740831267537eba88b821c281fe5f56253989869",
+  "restored_user_count": 8,
+  "backup_mfa_enabled_user_count": 1,
+  "passwords_changed": false,
+  "network": "aziralpdf-edge",
+  "public_proxy": "deploy-caddy-1",
+  "proxy_config": "/opt/fenix/deploy/Caddyfile",
+  "proxy_compose": "/opt/fenix/deploy/compose.yml",
+  "runtime_limits": {
+    "memory": "3g",
+    "cpus": 2
+  },
+  "validation": {
+    "full_docker_build": "passed",
+    "rotate": "passed",
+    "merge": "passed",
+    "compress": "passed",
+    "pdf_to_png": "passed",
+    "ocr_text_extraction": "passed",
+    "unauthenticated_pdf_operation_http_status": 401,
+    "public_https_rotate": "passed",
+    "public_status": "UP",
+    "legal_pages_http_status": 200,
+    "neighbor_sites_http_status": {
+      "zharqyn.life": 200,
+      "cafe.aziral.com": 200,
+      "play.aziral.com": 200
+    },
+    "full_unit_test_suite": "not run",
+    "new_github_actions_runs": 0
+  },
+  "limitations": [
+    "Email disabled: previous Mailcow service is unavailable.",
+    "pdf-to-cbr and url-to-pdf endpoints are disabled by the application."
+  ],
+  "recovery_notes": [
+    "Original config/database archives preserved in /opt/aziralpdf/backups with private directory permissions.",
+    "Caddyfile and proxy compose backups are in /opt/aziralpdf/backups.",
+    "Proxy container was hot-reloaded without recreating neighboring services.",
+    "Local development servers and temporary SSH tunnel stopped."
+  ]
+}

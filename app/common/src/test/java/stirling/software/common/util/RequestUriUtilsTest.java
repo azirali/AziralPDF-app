@@ -5,6 +5,32 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class RequestUriUtilsTest {
+    @Test
+    void billingPublicPathsNeverExposeCheckoutOrCustomerHistory() {
+        for (String path :
+                new String[] {
+                    "/pricing",
+                    "/billing/halyk/10000000-0000-4000-a000-000000000000",
+                    "/api/v1/billing/catalog",
+                    "/api/v1/billing/freedompay/check",
+                    "/api/v1/billing/halyk/result",
+                    "/api/v1/billing/freedompay/result"
+                }) {
+            assertTrue(RequestUriUtils.isPublicAuthEndpoint(path, ""));
+            assertTrue(RequestUriUtils.isPublicAuthEndpoint("/pdf" + path, "/pdf"));
+        }
+        for (String path :
+                new String[] {
+                    "/api/v1/billing/checkout",
+                    "/api/v1/billing/halyk/payments/id/session",
+                    "/api/v1/billing/halyk/result/nested",
+                    "/api/v1/billing/payments",
+                    "/api/v1/billing/payments/id",
+                    "/api/v1/billing/freedompay/result/other"
+                }) {
+            assertFalse(RequestUriUtils.isPublicAuthEndpoint(path, ""));
+        }
+    }
 
     // --- isStaticResource tests ---
 
@@ -228,5 +254,17 @@ class RequestUriUtilsTest {
         assertFalse(
                 RequestUriUtils.isPublicAuthEndpoint(
                         "/api/v1/storage/share-links/abc123/metadata", ""));
+    }
+
+    @Test
+    void frontendNavigationServesTheShellWithoutExposingApisOrMutations() {
+        assertTrue(RequestUriUtils.isFrontendNavigation("GET", "", "/settings/plan"));
+        assertTrue(RequestUriUtils.isFrontendNavigation("HEAD", "/app", "/app/rotate"));
+        assertTrue(RequestUriUtils.isFrontendNavigation("GET", "", "/files"));
+        assertFalse(RequestUriUtils.isFrontendNavigation("POST", "", "/settings/plan"));
+        assertFalse(RequestUriUtils.isFrontendNavigation("GET", "", "/api/v1/user/users"));
+        assertFalse(RequestUriUtils.isFrontendNavigation("GET", "", "/api/v1/billing/payments"));
+        assertFalse(RequestUriUtils.isFrontendNavigation("GET", "", "/actuator/env"));
+        assertFalse(RequestUriUtils.isFrontendNavigation("POST", "", "/register"));
     }
 }

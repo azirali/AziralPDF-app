@@ -20,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -70,8 +69,7 @@ public class ConvertWebsiteToPDF {
     public ResponseEntity<?> urlToPdf(@ModelAttribute UrlToPdfRequest request)
             throws IOException, InterruptedException {
         String URL = request.getUrlInput();
-        UriComponentsBuilder uriComponentsBuilder =
-                ServletUriComponentsBuilder.fromCurrentContextPath().path("/url-to-pdf");
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromPath("/url-to-pdf");
         URI location = null;
         HttpStatus status = HttpStatus.SEE_OTHER;
 

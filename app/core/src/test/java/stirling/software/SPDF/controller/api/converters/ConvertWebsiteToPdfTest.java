@@ -34,9 +34,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import stirling.software.SPDF.model.api.converters.UrlToPdfRequest;
 import stirling.software.common.configuration.RuntimePathConfig;
@@ -102,18 +99,10 @@ public class ConvertWebsiteToPdfTest {
                         runtimePathConfig,
                         applicationProperties,
                         tempFileManager);
-
-        // Provide RequestContext for ServletUriComponentsBuilder
-        MockHttpServletRequest req = new MockHttpServletRequest();
-        req.setScheme("http");
-        req.setServerName("localhost");
-        req.setServerPort(8080);
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(req));
     }
 
     @AfterEach
     void tearDown() throws Exception {
-        RequestContextHolder.resetRequestAttributes();
         if (mocks != null) mocks.close();
     }
 
@@ -127,6 +116,7 @@ public class ConvertWebsiteToPdfTest {
         assertEquals(HttpStatus.SEE_OTHER, resp.getStatusCode());
         URI location = resp.getHeaders().getLocation();
         assertNotNull(location, "Location header expected");
+        assertEquals("/url-to-pdf", location.getPath());
         assertTrue(
                 location.getQuery() != null
                         && location.getQuery().contains("error=error.invalidUrlFormat"));
@@ -143,6 +133,7 @@ public class ConvertWebsiteToPdfTest {
         assertEquals(HttpStatus.SEE_OTHER, resp.getStatusCode());
         URI location = resp.getHeaders().getLocation();
         assertNotNull(location, "Location header expected");
+        assertEquals("/url-to-pdf", location.getPath());
         assertTrue(
                 location.getQuery() != null
                         && location.getQuery().contains("error=error.urlNotReachable"));
@@ -161,6 +152,7 @@ public class ConvertWebsiteToPdfTest {
         assertEquals(HttpStatus.SEE_OTHER, resp.getStatusCode());
         URI location = resp.getHeaders().getLocation();
         assertNotNull(location, "Location header expected");
+        assertEquals("/url-to-pdf", location.getPath());
         assertTrue(
                 location.getQuery() != null
                         && location.getQuery().contains("error=error.endpointDisabled"));
@@ -347,6 +339,7 @@ public class ConvertWebsiteToPdfTest {
             assertEquals(HttpStatus.SEE_OTHER, resp.getStatusCode());
             URI location = resp.getHeaders().getLocation();
             assertNotNull(location, "Location header expected");
+            assertEquals("/url-to-pdf", location.getPath());
             assertTrue(
                     location.getQuery() != null
                             && location.getQuery().contains("error=error.disallowedUrlContent"));

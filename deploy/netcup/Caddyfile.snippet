@@ -1,0 +1,11 @@
+
+# AziralPDF restored from the 2026-08-12 backup, source 3257ffb3f.
+pdf.aziral.com {
+    encode zstd gzip
+    handle_path /legal/* {
+        reverse_proxy aziralpdf-legal:8080
+    }
+    handle {
+        reverse_proxy aziralpdf-app:8080
+    }
+}

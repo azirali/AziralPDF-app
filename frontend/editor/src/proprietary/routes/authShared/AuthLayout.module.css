@@ -1,10 +1,13 @@
 .authContainer {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  height: 100dvh;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 1.5rem;
   background-color: var(--auth-bg-color-light-only);
   padding: 1.5rem 1.5rem 0;
   font-family:
@@ -13,19 +16,21 @@
 }
 
 .authCard {
-  width: min(45rem, 96vw);
-  height: min(50.875rem, 96vh);
+  width: 100%;
+  max-width: 45rem;
+  min-height: min(50.875rem, 85dvh);
+  flex-shrink: 0;
+  margin-block: auto;
   display: grid;
   grid-template-columns: 1fr;
   background-color: var(--auth-card-bg);
   border-radius: 1.25rem;
   box-shadow: 0 1.25rem 3.75rem rgba(0, 0, 0, 0.12);
   overflow: hidden;
-  min-height: 0;
 }
 
 .authCardTwoColumns {
-  width: min(73.75rem, 96vw);
+  max-width: 73.75rem;
   grid-template-columns: 1fr 1fr;
 }
 
@@ -33,10 +38,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  overflow: hidden;
-  min-height: 0;
-  height: 100%;
+  padding: clamp(1rem, 4vw, 2rem);
+  min-width: 0;
 }
 
 .authLeftPanel::-webkit-scrollbar {
@@ -46,4 +49,20 @@
 .authContent {
   max-width: 26.25rem; /* 420px */
   width: 100%;
+}
+
+.authFooter {
+  width: calc(100% + 3rem);
+  flex-shrink: 0;
+}
+
+@media (max-width: 30rem) {
+  .authContainer {
+    padding: 1rem 1rem 0;
+    gap: 1rem;
+  }
+
+  .authFooter {
+    width: calc(100% + 2rem);
+  }
 }

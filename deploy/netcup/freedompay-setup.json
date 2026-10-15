@@ -1,0 +1,41 @@
+{
+  "merchant": "ИП AZIRAL, Казахстан",
+  "site": "https://pdf.aziral.com",
+  "currency": "KZT",
+  "provider": "Freedom Pay",
+  "integration": "init_payment.php / signed Merchant API callbacks",
+  "checkout": "hosted payment page, single-stage capture, prepaid manual renewal",
+  "plans": {
+    "PRO_MONTHLY": {
+      "amount": "1990.00",
+      "months": 1
+    },
+    "PRO_YEARLY": {
+      "amount": "19900.00",
+      "months": 12
+    }
+  },
+  "checkUrl": "https://pdf.aziral.com/api/v1/billing/freedompay/check",
+  "resultUrl": "https://pdf.aziral.com/api/v1/billing/freedompay/result",
+  "callbackMethod": "POST",
+  "callbackSignatureScripts": [
+    "check",
+    "result"
+  ],
+  "successAndFailureUrl": "https://pdf.aziral.com/settings/plan?payment=<order UUID>",
+  "offer": "https://pdf.aziral.com/legal/offer",
+  "termsVersion": "prepaid-v1",
+  "privacy": "https://pdf.aziral.com/legal/privacy",
+  "deploymentState": "Legacy alternative; current selected provider is Halyk ePay. See halyk-epay-setup.json.",
+  "activationSteps": [
+    "Owner registers merchant account and accepts provider contract for ИП AZIRAL.",
+    "Store merchant ID and signing secret in /opt/aziralpdf/billing.env (0600), not in chat or Git.",
+    "Enable Check URL verification with the merchant manager, and use single-stage card capture (pg_auto_clearing=1).",
+    "Complete store approval, configure fiscal receipt issuance with the provider or the merchant's accounting service before live launch; app email is only confirmation.",
+    "Enable test mode and verify real sandbox hosted checkout, signed check/result, duplicate notification, and return-page status.",
+    "Ask provider to activate Apple Pay on hosted checkout; verify on a supported device before enabling the Apple Pay display flag.",
+    "Only after approval and sandbox verification enable live billing; do not use recurring/card-token APIs."
+  ],
+  "renewal": "Manual. No automatic renewal, stored card token or unattended debit.",
+  "fiscalizationInfo": "https://freedompay.kz/largebusiness/services/online-fiscalization"
+}

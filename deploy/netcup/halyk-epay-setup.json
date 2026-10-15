@@ -1,0 +1,46 @@
+{
+  "merchant": "ИП AZIRAL, Казахстан",
+  "site": "https://pdf.aziral.com",
+  "provider": "Halyk ePay",
+  "ownerApplication": "https://halykbank.kz/business/payment/epay",
+  "merchantCabinet": "https://epay.homebank.kz/login",
+  "currency": "KZT",
+  "plans": {
+    "PRO_MONTHLY": {
+      "amount": "1990.00",
+      "months": 1
+    },
+    "PRO_YEARLY": {
+      "amount": "19900.00",
+      "months": 12
+    }
+  },
+  "renewal": "Ручное продление; сохранение карт, рекуррентные платежи и автоматические списания не используются.",
+  "callback": "https://pdf.aziral.com/api/v1/billing/halyk/result",
+  "callbackMethod": "POST application/json",
+  "returnUrl": "https://pdf.aziral.com/settings/plan?payment=<order UUID>",
+  "offer": "https://pdf.aziral.com/legal/offer",
+  "privacy": "https://pdf.aziral.com/legal/privacy",
+  "state": "Подготовлено; приём денег выключен до подключения и проверки магазина.",
+  "activationSteps": [
+    "Владелец подаёт заявку на интернет-эквайринг Halyk ePay для ИП AZIRAL и pdf.aziral.com; Onlinebank со счётом ИП сам по себе не является подключённым магазином ePay.",
+    "Получить одобрение магазина и отдельный TerminalID для AziralPDF, ClientID, ClientSecret. Отдельный терминал нужен для уникальности последних шести цифр invoiceId; не использовать терминал другого приложения.",
+    "Ключи внести в /opt/aziralpdf/billing.env (права 0600): AZIRAL_BILLING_HALYKCLIENTID, AZIRAL_BILLING_HALYKCLIENTSECRET, AZIRAL_BILLING_HALYKTERMINALID. Не отправлять ключи в чат или Git.",
+    "Согласовать одностадийное списание и фискализацию с банком/своей ККМ до включения реальных оплат. Информационное письмо приложения не является фискальным чеком.",
+    "На тестовом терминале включить TESTMODE=true и ENABLED=true; пройти платёжную страницу банка, проверку CHARGE, AUTH без выдачи Pro, отказ, повтор уведомления и восстановление статуса после закрытия вкладки. TEST_PAID не выдаёт реальный Pro.",
+    "На рабочем терминале заменить реквизиты, выставить TESTMODE=false и проверить реальную оплату владельцем. До этого не рекламировать приём денег как работающий.",
+    "Для Apple Pay отдельно выполнить требования ePay к Apple Merchant Identifier и сертификатам, загрузить сертификаты в кабинете и запросить активацию у поддержки Halyk. Не создавать платную учётную запись Apple без согласования владельца. APPLEPAYENABLED=true только после проверки на подходящем устройстве.",
+    "Возвраты оформлять через кабинет банка с ручной проверкой корректировки доступа в приложении; автоматический возврат/отзыв уже выданного доступа не реализован."
+  ],
+  "implementation": {
+    "hostedCheckout": "halyk.pay; карточные данные вводятся на странице банка",
+    "confirmation": "Авторизованный запрос status API: invoiceID, terminalID UUID, сумма и валюта; только CHARGE выдаёт Pro",
+    "recovery": "Проверка при возврате пользователя и фоновая сверка каждые 60 секунд для незавершённых заказов за последние 48 часов",
+    "invoices": "Сохраняемый в БД счётчик 000001..999999; лимит требует ручной миграции терминала, номера не переиспользуются"
+  },
+  "docs": [
+    "https://epayment.kz/docs/platezhnaya-stranica",
+    "https://epayment.kz/docs/check-status-payment",
+    "https://epayment.kz/docs/Setting%20up%20Apple%20Pay%20in%20your%20merchant%20profile"
+  ]
+}

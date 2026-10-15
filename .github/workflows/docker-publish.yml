@@ -2,14 +2,14 @@ name: Publish Docker image
 
 # Builds the ultra-lite image (embedded frontend, no OCR/LibreOffice) from
 # source and publishes it to GitHub Container Registry as
-#   ghcr.io/shutovbro/aziralpdf-app:latest
-#   ghcr.io/shutovbro/aziralpdf-app:sha-<commit>
+#   ghcr.io/azirali/aziralpdf-app:latest
+#   ghcr.io/azirali/aziralpdf-app:sha-<commit>
 # then, if the HF_SPACE variable is set, redeploys the Hugging Face demo
 # Space from that image.
 #
 # One-time setup for the demo:
 #   1. After the first successful run make the package public:
-#      github.com/shutovBro?tab=packages → aziralpdf-app → Package settings →
+#      github.com/azirali?tab=packages → aziralpdf-app → Package settings →
 #      Change visibility → Public. Hugging Face pulls it anonymously.
 #   2. Create a Space: huggingface.co/new-space → SDK "Docker" → "Blank".
 #   3. Repository variable HF_SPACE = <hf-user>/<space-name>
@@ -29,7 +29,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE: ghcr.io/shutovbro/aziralpdf-app
+  IMAGE: ghcr.io/azirali/aziralpdf-app
 
 jobs:
   build:

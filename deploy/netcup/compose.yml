@@ -1,0 +1,74 @@
+name: aziralpdf
+services:
+  app:
+    image: aziralpdf:audit-20261015-r2
+    container_name: aziralpdf
+    restart: unless-stopped
+    mem_limit: 3g
+    cpus: 2
+    pids_limit: 512
+    security_opt: [no-new-privileges:true]
+    cap_drop: [NET_RAW]
+    env_file: [./smtp.env, ./billing.env]
+    environment:
+      DOCKER_ENABLE_SECURITY: "true"
+      SECURITY_ENABLELOGIN: "true"
+      SECURITY_CSRFDISABLED: "false"
+      SYSTEM_DEFAULTLOCALE: ru-RU
+      SYSTEM_BACKENDURL: https://pdf.aziral.com
+      SYSTEM_FRONTENDURL: https://pdf.aziral.com
+      SYSTEM_CORSALLOWEDORIGINS: https://pdf.aziral.com
+      SYSTEM_ENABLEANALYTICS: "false"
+      SYSTEM_ENABLEPOSTHOG: "false"
+      SYSTEM_SHOWUPDATE: "false"
+      SYSTEM_GOOGLEVISIBILITY: "false"
+      METRICS_ENABLED: "false"
+      SHOW_SURVEY: "false"
+      SYSTEM_ENABLEURLTOPDF: "true"
+      MAIL_ENABLED: "true"
+      MAIL_ENABLEINVITES: "true"
+      MAIL_STARTTLSENABLE: "true"
+      MAIL_STARTTLSREQUIRED: "true"
+      MAIL_SSLENABLE: "false"
+      MAIL_SSLTRUST: smtp.resend.com
+      MAIL_SSLCHECKSERVERIDENTITY: "true"
+      LEGAL_TERMSANDCONDITIONS: https://pdf.aziral.com/legal/terms
+      LEGAL_PRIVACYPOLICY: https://pdf.aziral.com/legal/privacy
+      LEGAL_COOKIEPOLICY: https://pdf.aziral.com/legal/cookies
+      LEGAL_IMPRESSUM: https://pdf.aziral.com/legal/offer
+    volumes:
+      - ./configs:/configs
+      - ./logs:/logs
+      - ./customFiles:/customFiles
+      - ./pipeline:/pipeline
+      - ./storage:/storage
+    networks:
+      edge:
+        aliases: [aziralpdf-app]
+    logging:
+      driver: json-file
+      options: {max-size: 10m, max-file: "3"}
+  legal:
+    image: nginx@sha256:0985e772fb9f729e6fa0980da05fca5d9c468e870eed43071545afa9d2e27d94
+    container_name: aziralpdf-legal
+    restart: unless-stopped
+    user: "101:101"
+    read_only: true
+    mem_limit: 64m
+    cpus: 0.25
+    pids_limit: 64
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ./legal:/site:ro
+      - ./legal-nginx.conf:/etc/nginx/nginx.conf:ro
+    tmpfs: ["/tmp:size=16m,mode=1777"]
+    networks:
+      edge:
+        aliases: [aziralpdf-legal]
+    logging:
+      driver: json-file
+      options: {max-size: 5m, max-file: "2"}
+networks:
+  edge:
+    name: aziralpdf-edge

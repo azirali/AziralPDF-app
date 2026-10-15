@@ -659,6 +659,9 @@ export default function Login() {
       )}
 
       {/* Help section - only show on first-time setup with default credentials and username/password auth allowed */}
+      <Text size="sm" ta="center" mt="md">
+        <Anchor href="/pricing">{t("aziralBilling.navigation")}</Anchor>
+      </Text>
       {isFirstTimeSetup && showDefaultCredentials && isUserPassAllowed && (
         <Alert color="blue" variant="light" radius="md" mt="xl">
           <Stack gap="xs" align="center">

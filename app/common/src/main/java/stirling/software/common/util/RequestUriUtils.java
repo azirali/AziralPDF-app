@@ -71,6 +71,12 @@ public class RequestUriUtils {
                 || normalizedUri.endsWith(".wasm");
     }
 
+    public static boolean isFrontendNavigation(
+            String method, String contextPath, String requestURI) {
+        return ("GET".equalsIgnoreCase(method) || "HEAD".equalsIgnoreCase(method))
+                && isFrontendRoute(contextPath, requestURI);
+    }
+
     public static boolean isFrontendRoute(String contextPath, String requestURI) {
         if (requestURI == null) {
             return false;
@@ -171,6 +177,13 @@ public class RequestUriUtils {
                 || trimmedUri.startsWith("/saml2")
                 || trimmedUri.contains("/login/oauth2/code/") // Spring Security OAuth2 callback
                 || trimmedUri.contains("/oauth2/authorization/") // OAuth2 authorization endpoint
+                || trimmedUri.equals("/pricing")
+                || trimmedUri.equals("/pricing/")
+                || trimmedUri.matches("/billing/halyk/[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}")
+                || trimmedUri.equals("/api/v1/billing/catalog")
+                || trimmedUri.equals("/api/v1/billing/halyk/result")
+                || trimmedUri.equals("/api/v1/billing/freedompay/check")
+                || trimmedUri.equals("/api/v1/billing/freedompay/result")
                 || trimmedUri.startsWith("/api/v1/auth/login")
                 || trimmedUri.startsWith("/api/v1/auth/refresh")
                 || trimmedUri.startsWith("/api/v1/auth/logout")

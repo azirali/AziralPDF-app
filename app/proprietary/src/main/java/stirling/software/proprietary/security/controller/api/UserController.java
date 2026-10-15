@@ -102,16 +102,34 @@ public class UserController {
                         .body(Map.of("error", "Password is required"));
             }
 
+            if (password.length() < 6) {
+                return ResponseEntity.badRequest()
+                        .body(Map.of("error", "Password must be at least 6 characters"));
+            }
             if (email == null || email.isBlank()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Map.of("error", "Email is required"));
             }
-            String normalizedEmail = email.trim();
-            if (!normalizedEmail.contains("@") || !normalizedEmail.contains(".")) {
+            String normalizedEmail = email.trim().toLowerCase(Locale.ROOT);
+            boolean validEmail;
+            try {
+                jakarta.mail.internet.InternetAddress address =
+                        new jakarta.mail.internet.InternetAddress(normalizedEmail, true);
+                address.validate();
+                validEmail =
+                        normalizedEmail.equals(address.getAddress())
+                                && normalizedEmail.indexOf('@') > 0
+                                && normalizedEmail
+                                        .substring(normalizedEmail.lastIndexOf('@') + 1)
+                                        .contains(".");
+            } catch (jakarta.mail.internet.AddressException exception) {
+                validEmail = false;
+            }
+            if (!validEmail) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Map.of("error", "Invalid email format"));
             }
-            if (userRepository.findByEmail(normalizedEmail).isPresent()) {
+            if (userRepository.findByEmailIgnoreCase(normalizedEmail).isPresent()) {
                 log.warn("Registration failed: email already registered");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(Map.of("error", "Email already registered"));
@@ -156,7 +174,7 @@ public class UserController {
         } catch (Exception e) {
             log.error("Registration error for user: {}", username, e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("error", "Registration failed: " + e.getMessage()));
+                    .body(Map.of("error", "Registration failed. Please try again later."));
         }
     }
 
@@ -1018,9 +1036,35 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
+        User currentUser =
+                userRepository.findByUsernameIgnoreCase(principal.getName()).orElse(null);
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        boolean admin =
+                currentUser.getAuthorities().stream()
+                        .anyMatch(
+                                authority ->
+                                        Role.ADMIN.getRoleId().equals(authority.getAuthority()));
+        Team team = currentUser.getTeam();
+        boolean sharedTeam =
+                team != null
+                        && team.getId() != null
+                        && !TeamService.DEFAULT_TEAM_NAME.equals(team.getName())
+                        && !TeamService.INTERNAL_TEAM_NAME.equals(team.getName());
+
         List<UserSummaryDTO> users =
                 userRepository.findAll().stream()
                         .filter(User::isEnabled)
+                        .filter(
+                                user ->
+                                        admin
+                                                || java.util.Objects.equals(
+                                                        user.getId(), currentUser.getId())
+                                                || (sharedTeam
+                                                        && user.getTeam() != null
+                                                        && team.getId()
+                                                                .equals(user.getTeam().getId())))
                         .map(this::toUserSummaryDTO)
                         .collect(java.util.stream.Collectors.toList());
 

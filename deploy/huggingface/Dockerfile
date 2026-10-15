@@ -1,7 +1,7 @@
 # Hugging Face Space image for the AziralPDF demo.
 # __IMAGE_TAG__ is replaced by .github/workflows/docker-publish.yml with the
 # tag it just pushed to GHCR (the package must be public).
-FROM ghcr.io/shutovbro/aziralpdf-app:__IMAGE_TAG__
+FROM ghcr.io/azirali/aziralpdf-app:__IMAGE_TAG__
 
 # Spaces run the container as uid 1000; make that the app user so the init
 # script finds a writable /configs, /logs, /storage and home directory.

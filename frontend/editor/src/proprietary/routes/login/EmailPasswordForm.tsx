@@ -83,6 +83,12 @@ export default function EmailPasswordForm({
           <div className="auth-field">
             <PasswordInput
               id="password"
+              visibilityToggleButtonProps={{
+                "aria-label": t(
+                  "login.togglePasswordVisibility",
+                  "Show or hide password",
+                ),
+              }}
               label={t("login.password")}
               name="current-password"
               autoComplete="current-password"

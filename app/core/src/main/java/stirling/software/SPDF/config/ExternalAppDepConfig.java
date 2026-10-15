@@ -71,7 +71,6 @@ public class ExternalAppDepConfig {
         tmp.put(unoconvPath, List.of("Unoconvert"));
         tmp.put("qpdf", List.of("qpdf"));
         tmp.put("tesseract", List.of("tesseract"));
-        tmp.put("rar", List.of("rar")); // Required for real CBR output
         tmp.put(calibrePath, List.of("Calibre"));
         // ffmpeg disabled due to raised CVEs
         // tmp.put("ffmpeg", List.of("FFmpeg"));

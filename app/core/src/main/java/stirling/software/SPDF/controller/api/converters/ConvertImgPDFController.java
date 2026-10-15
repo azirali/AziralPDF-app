@@ -366,7 +366,7 @@ public class ConvertImgPDFController {
     @Operation(
             summary = "Convert PDF to CBR comic book archive",
             description =
-                    "This endpoint converts a PDF file to a CBR comic book archive using the local RAR CLI. "
+                    "This endpoint converts a PDF file to a CBR comic book archive using a stored RAR archive of PNG pages. "
                             + "Input:PDF Output:CBR Type:SISO")
     public ResponseEntity<?> convertPdfToCbr(@ModelAttribute ConvertPdfToCbrRequest request)
             throws IOException {

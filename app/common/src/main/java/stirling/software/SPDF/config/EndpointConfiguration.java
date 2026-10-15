@@ -536,7 +536,7 @@ public class EndpointConfiguration {
         addEndpointToGroup("Java", "pdf-to-epub");
         addEndpointToGroup("Java", "eml-to-pdf");
         addEndpointToGroup("Java", "handleData");
-        addEndpointToGroup("rar", "pdf-to-cbr");
+        addEndpointToGroup("Java", "pdf-to-cbr");
 
         // Javascript
         addEndpointToGroup("Javascript", "rearrange-pages");

@@ -94,6 +94,33 @@ class WatermarkControllerTest {
         }
     }
 
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.NullAndEmptySource
+    @org.junit.jupiter.params.provider.ValueSource(strings = {" "})
+    void missingColourStillProducesValidWatermarkedPdf(String colour) throws Exception {
+        AddWatermarkRequest request = new AddWatermarkRequest();
+        request.setFileInput(
+                new MockMultipartFile("fileInput", "test.pdf", "application/pdf", simplePdfBytes));
+        request.setWatermarkType("text");
+        request.setWatermarkText("AUDIT");
+        request.setAlphabet("roman");
+        request.setFontSize(30);
+        request.setOpacity(0.5f);
+        request.setWidthSpacer(50);
+        request.setHeightSpacer(50);
+        request.setCustomColor(colour);
+        when(pdfDocumentFactory.load(any(MultipartFile.class)))
+                .thenAnswer(inv -> Loader.loadPDF(simplePdfBytes));
+        byte[] output = drainBody(watermarkController.addWatermark(request));
+        try (PDDocument document = Loader.loadPDF(output)) {
+            assertEquals(1, document.getNumberOfPages());
+            assertTrue(
+                    new org.apache.pdfbox.text.PDFTextStripper()
+                            .getText(document)
+                            .contains("AUDIT"));
+        }
+    }
+
     @Nested
     @DisplayName("Text Watermark Tests")
     class TextWatermarkTests {
@@ -118,7 +145,7 @@ class WatermarkControllerTest {
             request.setOpacity(0.5f);
             request.setWidthSpacer(50);
             request.setHeightSpacer(50);
-            request.setCustomColor("#d3d3d3");
+            // An omitted colour must use the documented default.
             request.setConvertPDFToImage(false);
 
             when(pdfDocumentFactory.load(any(MultipartFile.class)))

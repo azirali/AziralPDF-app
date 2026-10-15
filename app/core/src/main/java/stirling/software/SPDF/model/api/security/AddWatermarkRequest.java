@@ -53,7 +53,7 @@ public class AddWatermarkRequest extends PDFFile {
     private int heightSpacer;
 
     @Schema(description = "The color for watermark", defaultValue = "#d3d3d3")
-    private String customColor;
+    private String customColor = "#d3d3d3";
 
     @Schema(
             description = "Convert the redacted PDF to an image",

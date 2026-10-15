@@ -79,7 +79,7 @@ class UserControllerTest {
     void registerRejectsExistingUser() throws Exception {
         UsernameAndPass payload = new UsernameAndPass();
         payload.setUsername("existing@example.com");
-        payload.setPassword("pw");
+        payload.setPassword("secure-password");
         when(userService.usernameExistsIgnoreCase("existing@example.com")).thenReturn(true);
 
         mockMvc.perform(
@@ -95,7 +95,7 @@ class UserControllerTest {
     @Test
     void registerRejectsMissingUsername() throws Exception {
         UsernameAndPass payload = new UsernameAndPass();
-        payload.setPassword("pw");
+        payload.setPassword("secure-password");
 
         mockMvc.perform(
                         post("/api/v1/user/register")
@@ -112,13 +112,13 @@ class UserControllerTest {
         UsernameAndPass payload = new UsernameAndPass();
         payload.setUsername("newuser");
         payload.setEmail("new@example.com");
-        payload.setPassword("pw");
+        payload.setPassword("secure-password");
         Team defaultTeam = new Team();
         defaultTeam.setName(TeamService.DEFAULT_TEAM_NAME);
 
         when(userService.usernameExistsIgnoreCase("newuser")).thenReturn(false);
         when(userService.isUsernameValid("newuser")).thenReturn(true);
-        when(userRepository.findByEmail("new@example.com")).thenReturn(Optional.empty());
+        when(userRepository.findByEmailIgnoreCase("new@example.com")).thenReturn(Optional.empty());
         when(licenseSettingsService.wouldExceedLimit(1)).thenReturn(false);
         when(teamRepository.findByName(TeamService.DEFAULT_TEAM_NAME))
                 .thenReturn(Optional.of(defaultTeam));
@@ -148,7 +148,7 @@ class UserControllerTest {
     void registerRejectsMissingEmail() throws Exception {
         UsernameAndPass payload = new UsernameAndPass();
         payload.setUsername("newuser");
-        payload.setPassword("pw");
+        payload.setPassword("secure-password");
 
         when(userService.usernameExistsIgnoreCase("newuser")).thenReturn(false);
         when(userService.isUsernameValid("newuser")).thenReturn(true);
@@ -196,5 +196,117 @@ class UserControllerTest {
                 .andExpect(jsonPath("$.message").value("User account unlocked successfully"));
 
         verify(loginAttemptService).resetAttempts("lockeduser");
+    }
+
+    @Test
+    void defaultTeamUsersCannotEnumerateOtherAccounts() throws Exception {
+        User self = directoryUser(1L, "self", TeamService.DEFAULT_TEAM_NAME, 1L);
+        User stranger = directoryUser(2L, "stranger", TeamService.DEFAULT_TEAM_NAME, 1L);
+        when(userRepository.findByUsernameIgnoreCase("self")).thenReturn(Optional.of(self));
+        when(userRepository.findAll()).thenReturn(java.util.List.of(self, stranger));
+        mockMvc.perform(
+                        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get(
+                                        "/api/v1/user/users")
+                                .principal(() -> "self"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].username").value("self"));
+    }
+
+    @Test
+    void namedTeamsSeeOnlyEnabledTeammates() throws Exception {
+        User self = directoryUser(1L, "self", "A", 2L);
+        User teammate = directoryUser(2L, "teammate", "A", 2L);
+        User disabled = directoryUser(3L, "disabled", "A", 2L);
+        disabled.setEnabled(false);
+        User stranger = directoryUser(4L, "stranger", "B", 3L);
+        when(userRepository.findByUsernameIgnoreCase("self")).thenReturn(Optional.of(self));
+        when(userRepository.findAll())
+                .thenReturn(java.util.List.of(self, teammate, disabled, stranger));
+        mockMvc.perform(
+                        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get(
+                                        "/api/v1/user/users")
+                                .principal(() -> "self"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    void administratorsCanStillSelectAllEnabledUsers() throws Exception {
+        User admin = directoryUser(1L, "admin", TeamService.DEFAULT_TEAM_NAME, 1L);
+        admin.addAuthority(
+                new stirling.software.proprietary.security.model.Authority("ROLE_ADMIN", admin));
+        User other = directoryUser(2L, "other", "Other", 2L);
+        when(userRepository.findByUsernameIgnoreCase("admin")).thenReturn(Optional.of(admin));
+        when(userRepository.findAll()).thenReturn(java.util.List.of(admin, other));
+        mockMvc.perform(
+                        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get(
+                                        "/api/v1/user/users")
+                                .principal(() -> "admin"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2));
+    }
+
+    @Test
+    void unknownPrincipalCannotReadDirectory() throws Exception {
+        mockMvc.perform(
+                        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get(
+                                        "/api/v1/user/users")
+                                .principal(() -> "unknown"))
+                .andExpect(status().isUnauthorized());
+        verify(userRepository, never()).findAll();
+    }
+
+    private static User directoryUser(Long id, String username, String teamName, Long teamId) {
+        Team team = new Team();
+        team.setId(teamId);
+        team.setName(teamName);
+        User user = new User();
+        user.setId(id);
+        user.setUsername(username);
+        user.setEnabled(true);
+        user.setTeam(team);
+        return user;
+    }
+
+    @Test
+    void registrationRejectsShortPasswordsBeforeCreatingUser() throws Exception {
+        when(userService.isUsernameValid("newuser")).thenReturn(true);
+        mockMvc.perform(
+                        post("/api/v1/user/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        "{\"username\":\"newuser\",\"password\":\"short\",\"email\":\"new@example.com\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Password must be at least 6 characters"));
+        verify(userService, never()).saveUserCore(any());
+    }
+
+    @Test
+    void registrationRejectsDuplicateEmailsRegardlessOfCase() throws Exception {
+        when(userService.isUsernameValid("newuser")).thenReturn(true);
+        when(userRepository.findByEmailIgnoreCase("new@example.com"))
+                .thenReturn(Optional.of(new User()));
+        mockMvc.perform(
+                        post("/api/v1/user/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        "{\"username\":\"newuser\",\"password\":\"secure-password\",\"email\":\"New@Example.COM\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Email already registered"));
+        verify(userService, never()).saveUserCore(any());
+    }
+
+    @Test
+    void registrationRejectsMalformedEmail() throws Exception {
+        when(userService.isUsernameValid("newuser")).thenReturn(true);
+        mockMvc.perform(
+                        post("/api/v1/user/register")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(
+                                        "{\"username\":\"newuser\",\"password\":\"secure-password\",\"email\":\"two@@example.com\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.error").value("Invalid email format"));
+        verify(userService, never()).saveUserCore(any());
     }
 }

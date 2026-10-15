@@ -209,6 +209,9 @@ public class WatermarkController {
 
         contentStream.setFont(font, fontSize);
 
+        if (colorString == null || colorString.isBlank()) {
+            colorString = "#d3d3d3";
+        }
         Color redactColor;
         try {
             if (!colorString.startsWith("#")) {

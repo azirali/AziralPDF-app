@@ -2,14 +2,18 @@ package stirling.software.common.util;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.zip.CRC32;
 
 import javax.imageio.ImageIO;
 
@@ -22,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 import lombok.extern.slf4j.Slf4j;
 
 import stirling.software.common.service.CustomPDFDocumentFactory;
-import stirling.software.common.util.ProcessExecutor.ProcessExecutorResult;
 
 @Slf4j
 public class PdfToCbrUtils {
@@ -100,51 +103,66 @@ public class PdfToCbrUtils {
                         "CBR conversion", new IOException("No pages were successfully rendered"));
             }
 
-            return createRarArchive(tempDir, generatedImages);
+            return createRarArchive(generatedImages);
         } finally {
             cleanupTempFiles(generatedImages, tempDir);
         }
     }
 
-    private static byte[] createRarArchive(Path tempDir, List<Path> images) throws IOException {
-        List<String> command = new ArrayList<>();
-        command.add("rar");
-        command.add("a");
-        command.add("-m5");
-        command.add("-ep1");
+    private static byte[] createRarArchive(List<Path> images) throws IOException {
+        // PNG data is already compressed. RAR's stored method needs no external compressor.
+        try (ByteArrayOutputStream archive = new ByteArrayOutputStream()) {
+            archive.write(new byte[] {'R', 'a', 'r', '!', 0x1a, 0x07, 0x00});
+            ByteBuffer mainHeader = rarHeader(0x73, 0, 13);
+            mainHeader.putShort((short) 0).putInt(0);
+            writeRarHeader(archive, mainHeader.array());
 
-        Path rarFile = tempDir.resolve("output.cbr");
-        command.add(rarFile.getFileName().toString());
+            for (Path image : images) {
+                byte[] name = image.getFileName().toString().getBytes(StandardCharsets.US_ASCII);
+                long size = Files.size(image);
+                if (size > 0xffffffffL) {
+                    throw new IOException(
+                            "Rendered CBR page exceeds the RAR stored-file size limit");
+                }
+                CRC32 dataCrc = new CRC32();
+                try (InputStream input = Files.newInputStream(image)) {
+                    byte[] buffer = new byte[8192];
+                    int count;
+                    while ((count = input.read(buffer)) != -1) {
+                        dataCrc.update(buffer, 0, count);
+                    }
+                }
 
-        for (Path image : images) {
-            command.add(image.getFileName().toString());
-        }
-
-        ProcessExecutor executor =
-                ProcessExecutor.getInstance(ProcessExecutor.Processes.INSTALL_APP);
-        try {
-            ProcessExecutorResult result =
-                    executor.runCommandWithOutputHandling(command, tempDir.toFile());
-            if (result.getRc() != 0) {
-                throw ExceptionUtils.createFileProcessingException(
-                        "RAR archive creation",
-                        new IOException("RAR command failed with code " + result.getRc()));
+                ByteBuffer fileHeader = rarHeader(0x74, 0x8000, 32 + name.length);
+                fileHeader.putInt((int) size).putInt((int) size);
+                fileHeader.put((byte) 3); // Unix host.
+                fileHeader.putInt((int) dataCrc.getValue());
+                fileHeader.putInt(0x00210000); // DOS epoch: 1980-01-01 00:00:00.
+                fileHeader.put((byte) 20).put((byte) 0x30); // RAR 2.0, stored method.
+                fileHeader.putShort((short) name.length).putInt(0100644).put(name);
+                writeRarHeader(archive, fileHeader.array());
+                Files.copy(image, archive);
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw ExceptionUtils.createProcessingInterruptedException("RAR creation", e);
-        }
 
-        if (!Files.exists(rarFile)) {
-            throw ExceptionUtils.createFileProcessingException(
-                    "RAR archive creation", new IOException("RAR file was not created"));
+            writeRarHeader(archive, rarHeader(0x7b, 0x4000, 7).array());
+            return archive.toByteArray();
         }
+    }
 
-        try (FileInputStream fis = new FileInputStream(rarFile.toFile());
-                ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            fis.transferTo(baos);
-            return baos.toByteArray();
-        }
+    private static ByteBuffer rarHeader(int type, int flags, int size) {
+        ByteBuffer header = ByteBuffer.allocate(size).order(ByteOrder.LITTLE_ENDIAN);
+        header.position(2); // Header CRC is filled after all fields have been written.
+        header.put((byte) type).putShort((short) flags).putShort((short) size);
+        return header;
+    }
+
+    private static void writeRarHeader(ByteArrayOutputStream archive, byte[] header)
+            throws IOException {
+        CRC32 crc = new CRC32();
+        crc.update(header, 2, header.length - 2);
+        header[0] = (byte) crc.getValue();
+        header[1] = (byte) (crc.getValue() >>> 8);
+        archive.write(header);
     }
 
     private static void cleanupTempFiles(List<Path> images, Path tempDir) {

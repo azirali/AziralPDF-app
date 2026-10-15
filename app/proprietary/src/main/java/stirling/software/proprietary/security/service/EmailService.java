@@ -31,13 +31,12 @@ public class EmailService {
     private final ApplicationProperties applicationProperties;
 
     /**
-     * Sends an email with an attachment asynchronously. This method is annotated with @Async, which
-     * means it will be executed asynchronously.
+     * Sends an email with an attachment before the request's temporary upload is cleaned up. SMTP
+     * failures must reach the controller before it acknowledges the request.
      *
      * @param email The Email object containing the recipient, subject, body, and file attachment.
      * @throws MessagingException If there is an issue with creating or sending the email.
      */
-    @Async
     public void sendEmailWithAttachment(Email email) throws MessagingException {
         MultipartFile file = email.getFileInput();
         // 1) Validate recipient email address

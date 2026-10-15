@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-15",
+  "url": "https://pdf.aziral.com",
+  "source_repository": "https://github.com/azirali/AziralPDF-app",
+  "base_revision": "3257ffb3fed8c6a2071e8b7f84a50ca61028eba4",
+  "source_patch": "/opt/aziralpdf/backups/features-final-20261015.patch",
+  "source_patch_sha256": "20abd4a2c30f47b3b1823aa07ab8de9d801132eed550af7c0b82419f1696875d",
+  "image": "aziralpdf:mail-url-cbr-20261015-r3",
+  "image_id": "sha256:8855e2717f8551f87840370d1aeb96319cdc85216e7ca62630599fe2bdd3fec9",
+  "health": "healthy",
+  "supersedes_limitations_in": "recovery-2026-10-15.json",
+  "changes": [
+    "Enabled URL to PDF and removed its dependency on thread-bound HTTP request context.",
+    "Created stored RAR archives for PDF to CBR without an external rar executable.",
+    "Configured existing Resend SMTP and kept attachment sending inside the job so the upload remains available and SMTP errors reach the client.",
+    "Replaced expired signing test fixtures with certificates generated for the test run; retained explicit expired-certificate rejection coverage."
+  ],
+  "email": {
+    "provider": "Resend",
+    "host": "smtp.resend.com",
+    "port": 2587,
+    "from": "AziralPDF <no-reply@finance.aziral.com>",
+    "tls": "STARTTLS required; hostname verification enabled",
+    "test": "HTTP 200 after SMTP send; one PDF attachment confirmed in recipient Gmail Inbox",
+    "recipient_personal_details_omitted": true,
+    "initial_failed_attempt": "Detected premature upload cleanup; fixed before the successful verification."
+  },
+  "validation": {
+    "backend_check": "passed",
+    "test_counts": {
+      "tests": 3174,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 97
+    },
+    "passed_tests": 3077,
+    "public_api": {
+      "checkedAt": "2026-10-15T12:51:07.199Z",
+      "base": "https://pdf.aziral.com",
+      "urlToPdf": {
+        "httpStatus": 200,
+        "pages": 1,
+        "bytes": 4726,
+        "expectedTextFound": true
+      },
+      "urlGuards": [
+        {
+          "input": "http://127.0.0.1:8080",
+          "status": 303,
+          "location": "/url-to-pdf?error=error.urlNotReachable"
+        },
+        {
+          "input": "http://169.254.169.254",
+          "status": 500,
+          "location": null
+        },
+        {
+          "input": "file:///etc/passwd",
+          "status": 500,
+          "location": null
+        }
+      ],
+      "pdfToCbr": {
+        "httpStatus": 200,
+        "bytes": 513,
+        "rar4Signature": true,
+        "roundTripHttpStatus": 200,
+        "roundTripPages": 2
+      },
+      "unauthenticatedConversion": 401
+    },
+    "neighbor_sites_http_status": {
+      "cafe.aziral.com": 200,
+      "zharqyn.life": 200,
+      "play.aziral.com": 200
+    },
+    "compose_config": "passed",
+    "new_github_actions_runs": 0,
+    "browser_login_http_status": 200,
+    "browser_login_url": "https://pdf.aziral.com/login"
+  },
+  "rollback": {
+    "pre_feature_compose": "/opt/aziralpdf/backups/compose.before-features-20261015T123420Z.yml",
+    "pre_feature_configs": "/opt/aziralpdf/backups/configs.before-features-20261015T123420Z.tar.gz",
+    "pre_final_compose": "/opt/aziralpdf/backups/compose.before-final-features-20261015T124933Z.yml",
+    "pre_final_configs": "/opt/aziralpdf/backups/configs.before-final-features-20261015T124933Z.tar.gz"
+  },
+  "secrets": "Deployment SMTP credentials are stored in /opt/aziralpdf/smtp.env (0600) and excluded from the repository.",
+  "cleanup": {
+    "build_worker_stopped": true,
+    "original_backups_preserved": true
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-15",
+  "url": "https://pdf.aziral.com",
+  "status": "complete",
+  "sender": "AziralPDF <noreply@aziral.com>",
+  "provider": "Resend",
+  "smtp_host": "smtp.resend.com",
+  "smtp_port": 2587,
+  "credential_scope_expected": "sending_access for aziral.com",
+  "smtp_env_path": "/opt/aziralpdf/smtp.env",
+  "smtp_env_mode": "0600",
+  "image": "aziralpdf:mail-url-cbr-20261015-r3",
+  "health": "healthy",
+  "supersedes_email_sender_in": "features-2026-10-15.json",
+  "validation": {
+    "smtp_tls_and_auth": "passed",
+    "compose_config": "passed",
+    "app_email_http_status": 200,
+    "test_email": "confirmed in recipient Gmail Inbox with PDF attachment",
+    "received_from": "AziralPDF <noreply@aziral.com>",
+    "dkim": "pass; header.i=@aziral.com; selector=resend",
+    "spf": "pass; envelope domain rsend.aziral.com",
+    "dmarc": "pass; header.from=aziral.com",
+    "checked_at_utc": "2026-10-15T13:10:58.358Z",
+    "new_github_actions_runs": 0
+  },
+  "rollback_smtp_env": "/opt/aziralpdf/backups/smtp.before-root-sender-20261015T130416Z.env",
+  "application_source_changed_this_update": false,
+  "private_details": "SMTP credentials, recipient address and Gmail identifiers omitted."
+}

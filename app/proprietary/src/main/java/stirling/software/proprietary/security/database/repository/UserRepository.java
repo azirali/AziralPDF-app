@@ -7,16 +7,23 @@ import java.util.UUID;
 import java.util.stream.Stream;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import jakarta.persistence.LockModeType;
 
 import stirling.software.proprietary.model.Team;
 import stirling.software.proprietary.security.model.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select u from User u where u.id = :id")
+    Optional<User> findForBilling(@Param("id") Long id);
+
     Optional<User> findByUsernameIgnoreCase(String username);
 
     @Query("FROM User u LEFT JOIN FETCH u.settings where upper(u.username) = upper(:username)")
@@ -30,6 +37,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByApiKey(String apiKey);
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByEmailIgnoreCase(String email);
 
     Optional<User> findBySupabaseId(UUID supabaseId);
 

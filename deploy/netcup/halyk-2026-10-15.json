@@ -1,0 +1,80 @@
+{
+  "feature": "AziralPDF Halyk ePay prepaid subscriptions",
+  "state": "deployed and verified; live payments disabled pending Halyk merchant onboarding",
+  "imageTag": "aziralpdf:halyk-20261015-r1",
+  "sourceOverlaySha256": "aa86f19cbd45d4916da25ca2b8536c4477612e12ea49682f6fa5699c963d9a77",
+  "provider": "HALYK_EPAY",
+  "livePayments": false,
+  "automaticRenewal": false,
+  "applePay": {
+    "enabled": false,
+    "deviceVerified": false,
+    "requires": "Separate ePay merchant certificate setup and bank activation"
+  },
+  "localChecks": {
+    "backend": "passed",
+    "backendTests": 3203,
+    "backendPassed": 3106,
+    "backendSkippedExisting": 97,
+    "backendFailures": 0,
+    "frontend": "passed",
+    "frontendTestFiles": 62,
+    "frontendTestsPassed": 731,
+    "billingBackendTests": 28,
+    "billingFrontendTests": 11
+  },
+  "sandboxOAuthProbe": {
+    "environment": "official public Halyk sandbox",
+    "httpStatus": 200,
+    "orderScopedTokenReceived": true,
+    "expiresIn": "1200",
+    "paymentPerformed": false
+  },
+  "actualHostedPayment": "not performed; merchant onboarding and credentials required",
+  "setupFile": "halyk-epay-setup.json",
+  "ciRuns": 0,
+  "updatedAt": "2026-10-15T15:20:28.979054+00:00",
+  "imageId": "sha256:ffe48ced41b583c38ea7e0d19e3eaa131dad0a5ab116fbbd571107ed1b3ea5a4",
+  "productionSmoke": {
+    "accountsPreserved": {
+      "enabledUsers": 8,
+      "usersFingerprint": "da1776b43f5dcfbbe88f46d3097af9eaece015fec144a9ee89a925b604bd7e26",
+      "licenseTier": "FREE"
+    },
+    "publicAndProtectedRoutes": {
+      "/pricing": 200,
+      "/api/v1/billing/catalog": 200,
+      "/api/v1/billing/payments": 401,
+      "/api/v1/billing/payments/unknown": 401,
+      "check": 503,
+      "result": 503,
+      "/api/v1/billing/halyk/result": 503,
+      "/api/v1/billing/halyk/payments/unknown/session": 401
+    },
+    "anonymousCheckout": 401,
+    "authenticatedHistory": "empty",
+    "foreignOrUnknownOrder": 404,
+    "health": 200,
+    "livePaymentsEnabled": false
+  },
+  "legalPages": "offer and privacy published with Halyk ePay; HTTP 200",
+  "databaseBackup": "/opt/aziralpdf/backups/configs-before-halyk-20261015.tgz",
+  "builderStopped": true,
+  "responsiveCheck": {
+    "desktop": [
+      1280,
+      900
+    ],
+    "mobile": [
+      375,
+      812
+    ],
+    "horizontalOverflow": false,
+    "yearlyPriceVerified": 19900,
+    "screenshots": [
+      "screenshots/halyk-pricing-desktop.jpg",
+      "screenshots/halyk-pricing-mobile.jpg"
+    ]
+  },
+  "verifiedAt": "2026-10-15T15:28:06.982811+00:00"
+}

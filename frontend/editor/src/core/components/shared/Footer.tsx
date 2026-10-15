@@ -42,8 +42,8 @@ export default function Footer({
   });
 
   // Default URLs
-  const defaultTermsUrl = "https://www.stirling.com/terms";
-  const defaultPrivacyUrl = "https://www.stirling.com/privacy";
+  const defaultTermsUrl = "https://pdf.aziral.com/legal/offer";
+  const defaultPrivacyUrl = "https://pdf.aziral.com/legal/privacy";
 
   // Use provided URLs or fall back to defaults
   const finalTermsUrl = finalTermsAndConditions || defaultTermsUrl;
@@ -55,7 +55,9 @@ export default function Footer({
   return (
     <div
       style={{
-        height: "var(--footer-height)",
+        minHeight: "var(--footer-height)",
+        padding: "0.5rem",
+        flexShrink: 0,
         backgroundColor: forceLightMode
           ? "#f1f3f5"
           : "var(--mantine-color-gray-1)",
@@ -68,7 +70,8 @@ export default function Footer({
       }}
     >
       <Flex
-        gap="md"
+        gap="sm"
+        wrap="wrap"
         justify="center"
         align="center"
         direction="row"
@@ -77,15 +80,6 @@ export default function Footer({
           color: forceLightMode ? "#495057" : undefined,
         }}
       >
-        <a
-          className="footer-link px-3"
-          id="survey"
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://stirlingpdf.info/s/cm28y3niq000o56dv7liv8wsu"
-        >
-          {t("survey.nav", "Survey")}
-        </a>
         <a
           className="footer-link px-3"
           target="_blank"
@@ -106,15 +100,7 @@ export default function Footer({
           className="footer-link px-3"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://discord.gg/Cn8pWhQRxZ"
-        >
-          {t("footer.discord", "Discord")}
-        </a>
-        <a
-          className="footer-link px-3"
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://github.com/shutovBro/AziralPDF-app"
+          href="https://github.com/azirali/AziralPDF-app"
         >
           {t("footer.issues", "GitHub")}
         </a>

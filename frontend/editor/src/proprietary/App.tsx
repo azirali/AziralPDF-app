@@ -14,6 +14,8 @@ import ShareLinkPage from "@app/routes/ShareLinkPage";
 import ParticipantView from "@app/components/workflow/ParticipantView";
 import MobileScannerPage from "@app/pages/MobileScannerPage";
 import Onboarding from "@app/components/onboarding/Onboarding";
+import HalykCheckout from "@app/routes/HalykCheckout";
+import Pricing from "@app/routes/Pricing";
 
 // Import global styles
 import "@app/styles/tailwind.css";
@@ -44,6 +46,14 @@ export default function App() {
   return (
     <Suspense fallback={<LoadingFallback />}>
       <Routes>
+        <Route
+          path="/pricing"
+          element={
+            <MobileScannerProviders>
+              <Pricing />
+            </MobileScannerProviders>
+          }
+        />
         {/* Mobile scanner route - no backend needed, pure P2P WebRTC */}
         <Route
           path="/mobile-scanner"
@@ -76,6 +86,10 @@ export default function App() {
                   <Route path="/auth/callback" element={<AuthCallback />} />
                   <Route path="/invite/:token" element={<InviteAccept />} />
                   <Route path="/share/:token" element={<ShareLinkPage />} />
+                  <Route
+                    path="/billing/halyk/:id"
+                    element={<HalykCheckout />}
+                  />
                   {/* Main app routes - Landing handles auth logic */}
                   <Route path="/*" element={<Landing />} />
                 </Routes>

@@ -22,6 +22,7 @@ import AdminStorageSharingSection from "@app/components/shared/config/configSect
 import ApiKeys from "@app/components/shared/config/configSections/ApiKeys";
 import AccountSection from "@app/components/shared/config/configSections/AccountSection";
 import GeneralSection from "@app/components/shared/config/configSections/GeneralSection";
+import BillingPanel from "@app/components/billing/BillingPanel";
 
 /**
  * Hook version of proprietary config nav sections with proper i18n support
@@ -59,6 +60,12 @@ export const useConfigNavSections = (
         label: t("account.accountSettings", "Account"),
         icon: "person-rounded",
         component: <AccountSection />,
+      });
+      preferencesSection.items.push({
+        key: "plan",
+        label: t("aziralBilling.navigation"),
+        icon: "payments-rounded",
+        component: <BillingPanel />,
       });
     }
   }
@@ -296,6 +303,12 @@ export const createConfigNavSections = (
         label: "Account",
         icon: "person-rounded",
         component: <AccountSection />,
+      });
+      preferencesSection.items.push({
+        key: "plan",
+        label: "Plans and payments",
+        icon: "payments-rounded",
+        component: <BillingPanel />,
       });
     }
   }

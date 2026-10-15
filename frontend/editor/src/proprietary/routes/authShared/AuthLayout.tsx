@@ -78,16 +78,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           />
         )}
       </div>
-      <div
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: "100%",
-          zIndex: 10,
-        }}
-      >
+      <div className={styles.authFooter}>
         <Footer forceLightMode={true} />
       </div>
     </div>

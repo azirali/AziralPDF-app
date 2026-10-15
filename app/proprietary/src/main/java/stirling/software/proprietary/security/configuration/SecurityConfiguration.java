@@ -358,7 +358,9 @@ public class SecurityConfiguration {
                                                 return RequestUriUtils.isStaticResource(
                                                                 contextPath, uri)
                                                         || RequestUriUtils.isPublicAuthEndpoint(
-                                                                uri, contextPath);
+                                                                uri, contextPath)
+                                                        || RequestUriUtils.isFrontendNavigation(
+                                                                req.getMethod(), contextPath, uri);
                                             })
                                     .permitAll()
                                     .anyRequest()
