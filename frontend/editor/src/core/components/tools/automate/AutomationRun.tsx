@@ -188,7 +188,8 @@ export default function AutomationRun({
         {isExecuting && (
           <div>
             <Text size="sm" mb="xs">
-              Progress: {currentStepIndex + 1}/{executionSteps.length}
+              {t("ui.progress") + " "}
+              {currentStepIndex + 1}/{executionSteps.length}
             </Text>
             <Progress value={getProgress()} size="lg" />
           </div>

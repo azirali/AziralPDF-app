@@ -435,7 +435,7 @@ export function AnnotationPanel(props: AnnotationPanelProps) {
                 </Text>
                 <img
                   src={stampImageData}
-                  alt="Stamp preview"
+                  alt={t("ui.stampPreviewLabel")}
                   style={{
                     maxWidth: "100%",
                     maxHeight: "150px",

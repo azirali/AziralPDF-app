@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -15,6 +16,8 @@ import styles from "@app/routes/AuthCallback.module.css";
  * We extract it, store in localStorage, and redirect to the home page.
  */
 export default function AuthCallback() {
+  const { t } = useTranslation();
+
   const navigate = useNavigate();
   const processingRef = useRef(false);
 
@@ -214,12 +217,12 @@ export default function AuthCallback() {
     <div className={styles.page}>
       <div className={styles.card}>
         <div className={`${styles.icon} ${styles.iconNeutral}`}>...</div>
-        <div className={styles.title}>Completing authentication</div>
+        <div className={styles.title}>{t("ui.completingAuthentication")}</div>
         <div className={styles.message}>
-          Please wait while we finish signing you in.
+          {t("ui.pleaseWaitWhileWeFinishSigningYouIn")}
         </div>
         <div className={styles.loadingExtra}>
-          You can close this window once it completes.
+          {t("ui.youCanCloseThisWindowOnceItCompletes")}
         </div>
       </div>
     </div>

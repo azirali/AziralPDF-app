@@ -1001,7 +1001,7 @@ export default function AdminGeneralSection() {
                     },
                   })
                 }
-                placeholder="username"
+                placeholder={t("ui.username")}
                 disabled={!loginEnabled}
               />
             </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, {
   useState,
   useRef,
@@ -68,6 +69,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
   manualCloseOnly = false,
   showCloseButton = false,
 }) => {
+  const { t } = useTranslation();
+
   const [internalOpen, setInternalOpen] = useState(false);
   const [isPinned, setIsPinned] = useState(false);
   const { tooltipLogo } = useLogoAssets();
@@ -401,8 +404,8 @@ export const Tooltip: React.FC<TooltipProps> = ({
             setIsPinned(false);
             setOpen(false);
           }}
-          title="Close tooltip"
-          aria-label="Close tooltip"
+          title={t("ui.closeTooltip")}
+          aria-label={t("ui.closeTooltip")}
         >
           <LocalIcon icon="close-rounded" width="1.25rem" height="1.25rem" />
         </button>

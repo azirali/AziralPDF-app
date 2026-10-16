@@ -2145,7 +2145,8 @@ const PdfTextEditorView = ({ data }: PdfTextEditorViewProps) => {
                     {conversionProgress.current !== undefined &&
                       conversionProgress.total !== undefined && (
                         <Text size="sm" c="dimmed">
-                          • Page {conversionProgress.current} of{" "}
+                          {t("ui.pageLabel") + " "}
+                          {conversionProgress.current} of{" "}
                           {conversionProgress.total}
                         </Text>
                       )}

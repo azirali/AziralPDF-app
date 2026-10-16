@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { BASE_PATH } from "@app/constants/app";
 
@@ -22,6 +23,8 @@ function LoginRightCarousel({
   initialSeconds?: number;
   slideSeconds?: number;
 }) {
+  const { t } = useTranslation();
+
   const totalSlides = imageSlides.length;
   const [index, setIndex] = useState(0);
   const mouse = useRef({ x: 0, y: 0 });
@@ -118,7 +121,7 @@ function LoginRightCarousel({
       {showBackground && (
         <img
           src={`${BASE_PATH}/Login/LoginBackgroundPanel.png`}
-          alt="Background panel"
+          alt={t("ui.backgroundPanel")}
           style={{
             position: "absolute",
             inset: 0,

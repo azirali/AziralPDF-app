@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Stack, Button } from "@mantine/core";
 import { CertSignParameters } from "@app/hooks/tools/certSign/useCertSignParameters";
 import { useAppConfig } from "@app/contexts/AppConfigContext";
@@ -13,6 +14,8 @@ const CertificateTypeSettings = ({
   onParameterChange,
   disabled = false,
 }: CertificateTypeSettingsProps) => {
+  const { t } = useTranslation();
+
   const { config } = useAppConfig();
   const isServerCertificateEnabled = config?.serverCertificateEnabled ?? false;
 
@@ -47,7 +50,7 @@ const CertificateTypeSettings = ({
           <div
             style={{ textAlign: "center", lineHeight: "1.1", fontSize: "11px" }}
           >
-            Manual
+            {t("ui.manual")}
           </div>
         </Button>
         {isServerCertificateEnabled && (
@@ -76,7 +79,7 @@ const CertificateTypeSettings = ({
                 fontSize: "11px",
               }}
             >
-              Auto (server)
+              {t("ui.autoServer")}
             </div>
           </Button>
         )}

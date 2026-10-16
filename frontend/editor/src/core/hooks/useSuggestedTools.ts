@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigationState } from "@app/contexts/NavigationContext";
 import { useToolNavigation } from "@app/hooks/useToolNavigation";
 import { useToolWorkflow } from "@app/contexts/ToolWorkflowContext";
@@ -22,32 +23,33 @@ export interface SuggestedTool {
 const ALL_SUGGESTED_TOOLS: Omit<SuggestedTool, "href" | "onClick">[] = [
   {
     id: "compress",
-    title: "Compress",
+    title: "home.compress.title",
     icon: CompressIcon,
   },
   {
     id: "convert",
-    title: "Convert",
+    title: "home.convert.title",
     icon: SwapHorizIcon,
   },
   {
     id: "sanitize",
-    title: "Sanitize",
+    title: "home.sanitize.title",
     icon: CleaningServicesIcon,
   },
   {
     id: "split",
-    title: "Split",
+    title: "home.split.title",
     icon: CropIcon,
   },
   {
     id: "ocr",
-    title: "OCR",
+    title: "home.ocr.title",
     icon: TextFieldsIcon,
   },
 ];
 
 export function useSuggestedTools(): SuggestedTool[] {
+  const { t } = useTranslation();
   const { selectedTool } = useNavigationState();
   const { getToolNavigation } = useToolNavigation();
   const { getSelectedTool } = useToolWorkflow();
@@ -65,6 +67,7 @@ export function useSuggestedTools(): SuggestedTool[] {
         // Fallback for tools not in registry
         return {
           ...tool,
+          title: t(tool.title),
           href: `/${tool.id}`,
           onClick: (e: React.MouseEvent) => {
             e.preventDefault();
@@ -75,8 +78,9 @@ export function useSuggestedTools(): SuggestedTool[] {
       const navProps = getToolNavigation(tool.id, toolRegistryEntry);
       return {
         ...tool,
+        title: t(tool.title),
         ...navProps,
       };
     });
-  }, [selectedTool, getToolNavigation, getSelectedTool]);
+  }, [selectedTool, getToolNavigation, getSelectedTool, t]);
 }

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Text } from "@mantine/core";
 import classes from "@app/components/pageEditor/bulkSelectionPanel/BulkSelectionPanel.module.css";
 
@@ -12,6 +13,8 @@ const SelectedPagesDisplay = ({
   displayDocument,
   syntaxError,
 }: SelectedPagesDisplayProps) => {
+  const { t } = useTranslation();
+
   if (selectedPageIds.length === 0 && !syntaxError) {
     return null;
   }
@@ -24,7 +27,9 @@ const SelectedPagesDisplay = ({
         </Text>
       ) : (
         <Text size="sm" c="dimmed" className={classes.selectedText}>
-          Selected: {selectedPageIds.length} pages (
+          {t("ui.selected") + " "}
+          {selectedPageIds.length}
+          {" " + t("ui.pages")}
           {displayDocument
             ? selectedPageIds
                 .map((id) => {

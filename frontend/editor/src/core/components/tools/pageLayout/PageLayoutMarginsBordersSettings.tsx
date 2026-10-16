@@ -75,7 +75,7 @@ export default function PageLayoutMarginsBordersSettings({
     <Stack gap="sm">
       <NumberInput
         label={t("pageLayout.top", "Top Margin")}
-        placeholder="Enter top margin"
+        placeholder={t("ui.enterTopMargin")}
         value={parameters.topMargin}
         onChange={(v) => onParameterChange("topMargin", Number(v))}
         min={0}
@@ -85,7 +85,7 @@ export default function PageLayoutMarginsBordersSettings({
       />
       <NumberInput
         label={t("pageLayout.bottom", "Bottom Margin")}
-        placeholder="Enter bottom margin"
+        placeholder={t("ui.enterBottomMargin")}
         value={parameters.bottomMargin}
         onChange={(v) => onParameterChange("bottomMargin", Number(v))}
         min={0}
@@ -95,7 +95,7 @@ export default function PageLayoutMarginsBordersSettings({
       />
       <NumberInput
         label={t("pageLayout.left", "Left Margin")}
-        placeholder="Enter left margin"
+        placeholder={t("ui.enterLeftMargin")}
         value={parameters.leftMargin}
         onChange={(v) => onParameterChange("leftMargin", Number(v))}
         min={0}
@@ -104,7 +104,7 @@ export default function PageLayoutMarginsBordersSettings({
       />
       <NumberInput
         label={t("pageLayout.right", "Right Margin")}
-        placeholder="Enter right margin"
+        placeholder={t("ui.enterRightMargin")}
         value={parameters.rightMargin}
         onChange={(v) => onParameterChange("rightMargin", Number(v))}
         min={0}
@@ -114,7 +114,7 @@ export default function PageLayoutMarginsBordersSettings({
       />
       <NumberInput
         label={t("pageLayout.innerMargin", "Inner Margin")}
-        placeholder="Enter inner margin"
+        placeholder={t("ui.enterInnerMargin")}
         value={parameters.innerMargin}
         onChange={(v) => onParameterChange("innerMargin", Number(v))}
         min={0}
@@ -137,7 +137,7 @@ export default function PageLayoutMarginsBordersSettings({
       {parameters.addBorder && (
         <NumberInput
           label={t("pageLayout.borderWidth", "Border Thickness")}
-          placeholder="Enter border thickness"
+          placeholder={t("ui.enterBorderThickness")}
           value={parameters.borderWidth}
           onChange={(v) => onParameterChange("borderWidth", Number(v))}
           min={1}

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   ActionIcon,
   Tooltip,
@@ -33,6 +34,8 @@ export function ColorControl({
   label,
   disabled = false,
 }: ColorControlProps) {
+  const { t } = useTranslation();
+
   const [opened, setOpened] = useState(false);
   // Buffer the colour locally so the picker stays responsive during drag.
   // Only propagate to the parent (which triggers expensive annotation updates)
@@ -111,7 +114,7 @@ export function ColorControl({
           />
           {supportsEyeDropper && (
             <Group justify="flex-end">
-              <Tooltip label="Pick colour from screen">
+              <Tooltip label={t("ui.pickColourFromScreen")}>
                 <ActionIcon
                   variant="subtle"
                   color="gray"

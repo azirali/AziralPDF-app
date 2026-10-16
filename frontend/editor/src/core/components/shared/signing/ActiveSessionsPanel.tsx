@@ -119,13 +119,14 @@ const ActiveSessionsPanel = ({
                     <div className="quick-access-popout__row-subtitle">
                       {session.itemType === "signRequest" ? (
                         <>
-                          From: {session.ownerUsername}
+                          {t("ui.from") + " "}
+                          {session.ownerUsername}
                           {session.dueDate &&
                             ` • Due: ${new Date(session.dueDate).toLocaleDateString()}`}
                         </>
                       ) : (
                         <>
-                          Created:{" "}
+                          {t("ui.created")}{" "}
                           {new Date(session.createdAt).toLocaleDateString()}
                           {session.signedCount !== undefined &&
                             session.participantCount !== undefined &&

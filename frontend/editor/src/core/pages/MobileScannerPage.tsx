@@ -1333,7 +1333,7 @@ export default function MobileScannerPage() {
           >
             <img
               src={currentPreview}
-              alt="Preview"
+              alt={t("ui.preview")}
               style={{
                 maxWidth: "100%",
                 maxHeight: "100%",

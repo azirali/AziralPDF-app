@@ -96,7 +96,13 @@ export default function IconSelector({
                 const isSelected = value === option.value;
 
                 return (
-                  <Tooltip key={option.value} label={option.label}>
+                  <Tooltip
+                    key={option.value}
+                    label={t(
+                      `automate.iconLabels.${option.value}`,
+                      option.label,
+                    )}
+                  >
                     <Box
                       onClick={() => handleIconSelect(option.value)}
                       style={{

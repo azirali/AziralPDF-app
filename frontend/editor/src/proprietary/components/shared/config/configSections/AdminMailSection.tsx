@@ -286,7 +286,7 @@ export default function AdminMailSection() {
                 onChange={(value) =>
                   setSettings({ ...settings, password: value })
                 }
-                placeholder="Enter SMTP password"
+                placeholder={t("ui.enterSMTPPassword")}
               />
             </div>
 

@@ -306,7 +306,7 @@ export function LocalEmbedPDF({
         <Stack align="center" gap="md">
           <div style={{ fontSize: "24px" }}>📄</div>
           <Text c="dimmed" size="sm">
-            No PDF provided
+            {t("ui.noPDFProvided")}
           </Text>
         </Stack>
       </Center>
@@ -350,7 +350,8 @@ export function LocalEmbedPDF({
         <Stack align="center" gap="md">
           <div style={{ fontSize: "24px" }}>❌</div>
           <Text c="red" size="sm" style={{ textAlign: "center" }}>
-            Error loading PDF engine: {error.message}
+            {t("ui.errorLoadingPDFEngine") + " "}
+            {error.message}
           </Text>
         </Stack>
       </Center>

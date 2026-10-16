@@ -261,7 +261,13 @@ const StampSetupSettings = ({
             onChange={(value) => {
               const template = STAMP_TEMPLATES.find((t) => t.id === value);
               if (template) {
-                onParameterChange("stampText", template.text);
+                onParameterChange(
+                  "stampText",
+                  t(
+                    `AddStampRequest.templateText.${template.id}`,
+                    template.text,
+                  ),
+                );
                 onParameterChange("position", template.position as any);
               }
             }}
@@ -593,22 +599,22 @@ const StampSetupSettings = ({
                         onClick={() =>
                           onParameterChange(
                             "stampText",
-                            "Page @page_number of @total_pages",
+                            t("ui.pagePageNumberOfTotalPages"),
                           )
                         }
                       >
-                        Page @page_number of @total_pages
+                        {t("ui.pagePageNumberOfTotalPages")}
                       </ClickableCode>
                       <ClickableCode
                         block
                         onClick={() =>
                           onParameterChange(
                             "stampText",
-                            "Created: @date{dd/MM/yyyy HH:mm}",
+                            t("ui.createdDate123DdMMYyyyHHMm125"),
                           )
                         }
                       >
-                        Created: @date&#123;dd/MM/yyyy HH:mm&#125;
+                        {t("ui.createdDate123DdMMYyyyHHMm125")}
                       </ClickableCode>
                       <ClickableCode
                         block
@@ -684,7 +690,7 @@ const StampSetupSettings = ({
             <Stack gap="xs">
               <img
                 src={URL.createObjectURL(parameters.stampImage)}
-                alt="Selected stamp image"
+                alt={t("ui.selectedStampImage")}
                 className="max-h-24 w-full object-contain border border-gray-200 rounded bg-gray-50"
               />
               <Text size="xs" c="dimmed">

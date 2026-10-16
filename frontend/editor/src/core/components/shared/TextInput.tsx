@@ -1,3 +1,4 @@
+import i18n from "@app/i18n";
 import React, { forwardRef } from "react";
 import LocalIcon from "@app/components/shared/LocalIcon";
 import styles from "@app/components/shared/textInput/TextInput.module.css";
@@ -112,7 +113,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
             type="button"
             className={styles.clearButton}
             onClick={handleClear}
-            aria-label="Clear input"
+            aria-label={i18n.t("ui.clearInput")}
           >
             <LocalIcon icon="close-rounded" width="1.25rem" height="1.25rem" />
           </button>

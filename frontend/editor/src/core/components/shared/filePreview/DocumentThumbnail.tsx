@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { Box, Center, Loader, Stack, Text } from "@mantine/core";
 import LockIcon from "@mui/icons-material/Lock";
@@ -31,6 +32,8 @@ const DocumentThumbnail: React.FC<DocumentThumbnailProps> = ({
   onClick,
   children,
 }) => {
+  const { t } = useTranslation();
+
   if (!file) return null;
 
   const containerStyle: React.CSSProperties = {
@@ -51,7 +54,7 @@ const DocumentThumbnail: React.FC<DocumentThumbnailProps> = ({
         <PrivateContent>
           <img
             src={thumbnail}
-            alt={`Preview of ${file.name}`}
+            alt={t("ui.previewOfFile", { name: file.name })}
             className={imgClassName}
             style={
               imgClassName
@@ -106,7 +109,7 @@ const DocumentThumbnail: React.FC<DocumentThumbnailProps> = ({
               borderRadius: "6px",
             }}
           >
-            Locked
+            {t("ui.locked")}
           </span>
         </div>
         {children}
@@ -125,7 +128,7 @@ const DocumentThumbnail: React.FC<DocumentThumbnailProps> = ({
         >
           <Loader size="sm" />
           <Text size="xs" c="dimmed">
-            Loading thumbnail...
+            {t("ui.loadingThumbnail")}
           </Text>
         </Stack>
         {children}

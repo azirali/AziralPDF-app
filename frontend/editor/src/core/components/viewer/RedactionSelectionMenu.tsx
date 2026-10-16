@@ -139,7 +139,7 @@ function RedactionSelectionMenuInner({
       }}
     >
       <Group gap="sm" wrap="nowrap" justify="center">
-        <Tooltip label="Remove this mark">
+        <Tooltip label={t("ui.removeThisMark")}>
           <ActionIcon
             variant="subtle"
             color="gray"
@@ -181,7 +181,7 @@ function RedactionSelectionMenuInner({
               root: { flexShrink: 0, whiteSpace: "nowrap" },
             }}
           >
-            Apply (permanent)
+            {t("ui.applyPermanent")}
           </Button>
         </Tooltip>
       </Group>

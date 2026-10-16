@@ -39,13 +39,14 @@ export function OverviewHeader() {
           </Text>
           {user?.email && (
             <Text size="xs" c="dimmed" mt="0.25rem">
-              Signed in as: {user.email}
+              {t("ui.signedInAs") + " "}
+              {user.email}
             </Text>
           )}
         </div>
         {user && (
           <Button color="red" variant="filled" onClick={handleLogout}>
-            Log out
+            {t("ui.logOut")}
           </Button>
         )}
       </div>

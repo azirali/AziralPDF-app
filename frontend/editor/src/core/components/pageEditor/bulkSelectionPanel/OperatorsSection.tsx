@@ -26,10 +26,10 @@ const OperatorsSection = ({
           className={classes.operatorChip}
           onClick={() => onInsertOperator("and")}
           disabled={!csvInput.trim()}
-          title="Combine selections (both conditions must be true)"
+          title={t("ui.combineSelectionsBothConditionsMustBeTrue")}
         >
           <Text size="xs" fw={500}>
-            and
+            {t("ui.and")}
           </Text>
         </Button>
         <Button
@@ -38,7 +38,7 @@ const OperatorsSection = ({
           className={classes.operatorChip}
           onClick={() => onInsertOperator("or")}
           disabled={!csvInput.trim()}
-          title="Add to selection (either condition can be true)"
+          title={t("ui.addToSelectionEitherConditionCanBeTrue")}
         >
           <Text size="xs" fw={500}>
             or
@@ -50,10 +50,10 @@ const OperatorsSection = ({
           className={classes.operatorChip}
           onClick={() => onInsertOperator("not")}
           disabled={!csvInput.trim()}
-          title="Exclude from selection"
+          title={t("ui.excludeFromSelection")}
         >
           <Text size="xs" fw={500}>
-            not
+            {t("ui.not")}
           </Text>
         </Button>
       </Group>
@@ -64,10 +64,10 @@ const OperatorsSection = ({
           variant="outline"
           className={classes.operatorChip}
           onClick={() => onInsertOperator("even")}
-          title="Select all even-numbered pages (2, 4, 6, 8...)"
+          title={t("ui.selectAllEvenNumberedPages2468")}
         >
           <Text size="xs" fw={500}>
-            even
+            {t("ui.even")}
           </Text>
         </Button>
         <Button
@@ -75,10 +75,10 @@ const OperatorsSection = ({
           variant="outline"
           className={classes.operatorChip}
           onClick={() => onInsertOperator("odd")}
-          title="Select all odd-numbered pages (1, 3, 5, 7...)"
+          title={t("ui.selectAllOddNumberedPages1357")}
         >
           <Text size="xs" fw={500}>
-            odd
+            {t("ui.odd")}
           </Text>
         </Button>
       </Group>

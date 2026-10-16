@@ -47,7 +47,7 @@ export default function LoggedInState() {
             }}
           >
             <LogoIcon
-              alt="AziralPDF Logo"
+              alt={t("ui.aziralpdfLogo")}
               style={{ width: "64px", height: "64px", objectFit: "contain" }}
             />
           </div>
@@ -68,7 +68,7 @@ export default function LoggedInState() {
 
         <div style={{ textAlign: "center", marginTop: "16px" }}>
           <p style={{ color: "#6b7280", fontSize: "14px" }}>
-            Redirecting to home...
+            {t("ui.redirectingToHome")}
           </p>
         </div>
       </div>

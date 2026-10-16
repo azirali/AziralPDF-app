@@ -127,22 +127,26 @@ export default function AdminPremiumSection() {
           <List mt="xs" size="sm">
             <List.Item>
               <Text size="sm" component="span">
-                <strong>SSO Auto Login</strong> (PRO) - Connections
+                <strong>{t("ui.ssoAutoLogin")}</strong>
+                {" " + t("ui.proConnections")}
               </Text>
             </List.Item>
             <List.Item>
               <Text size="sm" component="span">
-                <strong>Custom Metadata</strong> (PRO) - General
+                <strong>{t("ui.customMetadata")}</strong>
+                {" " + t("ui.proGeneral")}
               </Text>
             </List.Item>
             <List.Item>
               <Text size="sm" component="span">
-                <strong>Audit Logging</strong> (ENTERPRISE) - Security
+                <strong>{t("ui.auditLogging")}</strong>
+                {" " + t("ui.enterpriseSecurity")}
               </Text>
             </List.Item>
             <List.Item>
               <Text size="sm" component="span">
-                <strong>Database Configuration</strong> (ENTERPRISE) - Database
+                <strong>{t("ui.databaseConfiguration")}</strong>
+                {" " + t("ui.enterpriseDatabase")}
               </Text>
             </List.Item>
           </List>

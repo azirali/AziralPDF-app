@@ -34,7 +34,7 @@ interface FormFieldSidebarProps {
 }
 
 export function FormFieldSidebar({ visible, onToggle }: FormFieldSidebarProps) {
-  useTranslation();
+  const { t } = useTranslation();
   const { state, setValue, setActiveField } = useFormFill();
   const { fields, activeFieldName, loading } = state;
   const activeFieldRef = useRef<HTMLDivElement>(null);
@@ -109,7 +109,7 @@ export function FormFieldSidebar({ visible, onToggle }: FormFieldSidebarProps) {
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <TextFieldsIcon sx={{ fontSize: 18, opacity: 0.7 }} />
           <Text fw={600} size="sm">
-            Form Fields
+            {t("ui.formFields")}
           </Text>
           <Badge size="xs" variant="light" color="blue" radius="sm">
             {fields.length}
@@ -119,7 +119,7 @@ export function FormFieldSidebar({ visible, onToggle }: FormFieldSidebarProps) {
           variant="subtle"
           size="sm"
           onClick={onToggle}
-          aria-label="Close sidebar"
+          aria-label={t("ui.closeSidebar")}
         >
           <CloseIcon sx={{ fontSize: 16 }} />
         </ActionIcon>
@@ -130,7 +130,7 @@ export function FormFieldSidebar({ visible, onToggle }: FormFieldSidebarProps) {
         {loading && (
           <div className={styles.emptyState}>
             <Text size="sm" c="dimmed">
-              Loading form fields...
+              {t("ui.loadingFormFields")}
             </Text>
           </div>
         )}
@@ -138,7 +138,7 @@ export function FormFieldSidebar({ visible, onToggle }: FormFieldSidebarProps) {
         {!loading && fields.length === 0 && (
           <div className={styles.emptyState}>
             <span className={styles.emptyStateText}>
-              No form fields found in this PDF
+              {t("ui.noFormFieldsFoundInThisPDF")}
             </span>
           </div>
         )}
@@ -152,7 +152,8 @@ export function FormFieldSidebar({ visible, onToggle }: FormFieldSidebarProps) {
                   style={i === 0 ? { marginTop: 0 } : undefined}
                 >
                   <Text className={styles.pageDividerLabel}>
-                    Page {pageIdx + 1}
+                    {t("ui.page") + " "}
+                    {pageIdx + 1}
                   </Text>
                 </div>
 
@@ -182,7 +183,9 @@ export function FormFieldSidebar({ visible, onToggle }: FormFieldSidebarProps) {
                           {field.label || field.name}
                         </span>
                         {field.required && (
-                          <span className={styles.fieldRequired}>req</span>
+                          <span className={styles.fieldRequired}>
+                            {t("ui.req")}
+                          </span>
                         )}
                       </div>
 

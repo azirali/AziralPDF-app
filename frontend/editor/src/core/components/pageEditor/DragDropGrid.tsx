@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, {
   useRef,
   useEffect,
@@ -376,6 +377,8 @@ const DragDropGrid = <T extends DragDropItem>({
   selectedPageIds,
   onVisibleItemsChange,
 }: DragDropGridProps<T>) => {
+  const { t } = useTranslation();
+
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -987,7 +990,7 @@ const DragDropGrid = <T extends DragDropItem>({
             {dragPreview ? (
               <img
                 src={dragPreview.src}
-                alt="Dragging"
+                alt={t("ui.dragging")}
                 style={{
                   width: `calc(20rem * ${zoomLevel})`,
                   height: `calc(20rem * ${zoomLevel})`,

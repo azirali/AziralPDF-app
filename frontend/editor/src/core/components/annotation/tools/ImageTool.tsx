@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useState } from "react";
 import { Stack } from "@mantine/core";
 import { BaseAnnotationTool } from "@app/components/annotation/shared/BaseAnnotationTool";
@@ -12,6 +13,8 @@ export const ImageTool: React.FC<ImageToolProps> = ({
   onImageChange,
   disabled = false,
 }) => {
+  const { t } = useTranslation();
+
   const [, setImageData] = useState<string | null>(null);
 
   const handleImageUpload = async (file: File | null) => {
@@ -57,8 +60,8 @@ export const ImageTool: React.FC<ImageToolProps> = ({
         <ImageUploader
           onImageChange={handleImageUpload}
           disabled={disabled}
-          label="Upload Image"
-          placeholder="Select image file"
+          label={t("ui.uploadImage")}
+          placeholder={t("ui.selectImageFile")}
           hint="Upload a PNG, JPG, SVG, or other image file to place on the PDF. SVG files will be converted to PNG for compatibility."
         />
       </Stack>

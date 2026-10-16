@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { Text, Stack } from "@mantine/core";
 import { formatPrice } from "@app/components/shared/stripeCheckout/utils/pricingUtils";
@@ -25,6 +26,8 @@ interface EnterprisePriceProps {
 type PriceDisplayProps = SimplePriceProps | EnterprisePriceProps;
 
 export const PriceDisplay: React.FC<PriceDisplayProps> = (props) => {
+  const { t } = useTranslation();
+
   if (props.mode === "simple") {
     const fontSize = props.size || "2.25rem";
     return (
@@ -56,7 +59,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = (props) => {
     <Stack gap="sm">
       <div>
         <Text size="sm" c="dimmed" mb="xs">
-          Base Price
+          {t("ui.basePrice")}
         </Text>
         <Text size={fontSize} fw={PRICE_FONT_WEIGHT}>
           {formatPrice(basePrice, currency)}
@@ -68,20 +71,23 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = (props) => {
       </div>
       <div>
         <Text size="sm" c="dimmed" mb="xs">
-          Per Seat
+          {t("ui.perSeat")}
         </Text>
         <Text size={fontSize} fw={PRICE_FONT_WEIGHT}>
           {formatPrice(seatPrice, currency)}
           <Text component="span" size="sm" c="dimmed" fw={400}>
             {" "}
-            /seat/{period}
+            {t("ui.seat")}
+            {period}
           </Text>
         </Text>
       </div>
       {totalPrice !== undefined && seatCount && (
         <div>
           <Text size="sm" c="dimmed" mb="xs">
-            Total ({seatCount} seats)
+            {t("ui.total")}
+            {seatCount}
+            {" " + t("ui.seats")}
           </Text>
           <Text
             size={totalFontSize}

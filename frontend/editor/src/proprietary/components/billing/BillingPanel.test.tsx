@@ -1,3 +1,7 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { createInstance } from "i18next";
+import { parse } from "smol-toml";
 import { randomUUID } from "node:crypto";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MantineProvider } from "@mantine/core";
@@ -15,11 +19,12 @@ const mocks = vi.hoisted(() => ({
   payment: vi.fn(),
   checkout: vi.fn(),
   license: vi.fn(),
-  t: (key: string) => key,
+  t: vi.fn((key: string, _options?: Record<string, unknown>) => key),
+  language: "en-GB",
 }));
 vi.mock("react-i18next", async (original) => ({
   ...(await original<typeof import("react-i18next")>()),
-  useTranslation: () => ({ t: mocks.t, i18n: { language: "en-GB" } }),
+  useTranslation: () => ({ t: mocks.t, i18n: { language: mocks.language } }),
 }));
 vi.mock("@app/components/shared/LocalIcon", () => ({ default: () => null }));
 vi.mock("@app/services/subscriptionService", () => ({
@@ -79,6 +84,8 @@ beforeEach(() => {
     configurable: true,
   });
   vi.clearAllMocks();
+  mocks.t.mockImplementation((key: string) => key);
+  mocks.language = "en-GB";
   mocks.catalog.mockResolvedValue(catalog);
   mocks.history.mockResolvedValue([]);
   mocks.license.mockResolvedValue({
@@ -144,7 +151,7 @@ describe("AziralPDF billing", () => {
       screen.queryByText("aziralBilling.result.PAID"),
     ).not.toBeInTheDocument();
     expect(mocks.checkout).not.toHaveBeenCalled();
-    expect(screen.getByText("FREE")).toBeInTheDocument();
+    expect(screen.getAllByText("aziralBilling.freePlan")).toHaveLength(2);
   });
   it("labels test payments without claiming that Pro was activated", async () => {
     mocks.payment.mockResolvedValue({
@@ -154,7 +161,7 @@ describe("AziralPDF billing", () => {
     });
     mount(`/settings/plan?payment=${order.id}`);
     await screen.findByText("aziralBilling.result.TEST_PAID");
-    expect(screen.getByText("FREE")).toBeInTheDocument();
+    expect(screen.getAllByText("aziralBilling.freePlan")).toHaveLength(2);
     expect(
       screen.queryByText("aziralBilling.result.PAID"),
     ).not.toBeInTheDocument();
@@ -182,4 +189,80 @@ describe("AziralPDF billing", () => {
       screen.getByRole("button", { name: "aziralBilling.accessIncluded" }),
     ).toBeDisabled();
   });
+});
+
+describe("Russian billing interface", () => {
+  beforeEach(async () => {
+    const translator = createInstance();
+    await translator.init({
+      lng: "ru-RU",
+      fallbackLng: false,
+      resources: {
+        "ru-RU": {
+          translation: parse(
+            readFileSync(
+              resolve(
+                process.cwd(),
+                "editor/public/locales/ru-RU/translation.toml",
+              ),
+              "utf8",
+            ),
+          ),
+        },
+      },
+    });
+    mocks.language = "ru-RU";
+    mocks.t.mockImplementation((key, options) => translator.t(key, options));
+  });
+
+  it("shows Russian public plans, periods, prices and unavailable payment notice", async () => {
+    mocks.catalog.mockResolvedValue({ ...catalog, checkoutEnabled: false });
+    mount("/pricing", true);
+    await screen.findByRole("heading", {
+      name: "Выберите тариф для работы с PDF",
+    });
+    expect(
+      screen.getByRole("heading", { name: "Бесплатный" }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("20 операций в день")).toBeInTheDocument();
+    expect(screen.getByText(/Подключаем онлайн-оплату/)).toBeInTheDocument();
+    expect(screen.getByText(/1\s990/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("radio", { name: "На год" }));
+    expect(screen.getByText(/19\s900/)).toBeInTheDocument();
+    expect(screen.getByText("12 месяцев по цене 10")).toBeInTheDocument();
+    expect(screen.queryByText(/aziralBilling\./)).not.toBeInTheDocument();
+  });
+
+  it("translates account tier, consent and checkout errors", async () => {
+    mocks.checkout.mockRejectedValue(new Error("Provider unavailable"));
+    mount();
+    await screen.findByRole("heading", { name: "Pro" });
+    expect(screen.getAllByText("Бесплатный")).toHaveLength(2);
+    expect(
+      screen.getByRole("checkbox", {
+        name: "Я принимаю условия публичной оферты",
+      }),
+    ).not.toBeChecked();
+    fireEvent.click(screen.getByRole("checkbox"));
+    fireEvent.click(screen.getByRole("button", { name: /Оплатить.*за месяц/ }));
+    await screen.findByText(/Не удалось открыть страницу оплаты/);
+    expect(screen.queryByText("FREE")).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ["PENDING", "Ожидает оплаты", "Ожидаем подтверждения оплаты."],
+    ["PAID", "Оплачен", "Оплата подтверждена."],
+    ["TEST_PAID", "Тестовый платёж", "Тестовый платёж подтверждён."],
+    ["FAILED", "Ошибка оплаты", "Оплата не завершена."],
+  ] as const)(
+    "translates %s payment history and return message",
+    async (status, label, message) => {
+      mocks.history.mockResolvedValue([{ ...order, status }]);
+      mocks.payment.mockResolvedValue({ ...order, status });
+      mount(`/settings/plan?payment=${order.id}`);
+      await screen.findByText(new RegExp(message));
+      expect(screen.getByText(label)).toBeInTheDocument();
+      expect(screen.getByText("История платежей")).toBeInTheDocument();
+    },
+  );
 });

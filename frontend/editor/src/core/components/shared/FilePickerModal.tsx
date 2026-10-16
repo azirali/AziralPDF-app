@@ -147,7 +147,11 @@ const FilePickerModal = ({
                 {storedFiles.length}{" "}
                 {t("fileUpload.filesAvailable", "files available")}
                 {selectedFileIds.length > 0 && (
-                  <> • {selectedFileIds.length} selected</>
+                  <>
+                    {" "}
+                    • {selectedFileIds.length}
+                    {" " + t("ui.selectedLabel")}
+                  </>
                 )}
               </Text>
               <Group gap="xs">

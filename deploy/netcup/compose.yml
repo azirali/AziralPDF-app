@@ -1,7 +1,7 @@
 name: aziralpdf
 services:
   app:
-    image: aziralpdf:audit-20261015-r3
+    image: aziralpdf:ru-20261016-r1
     container_name: aziralpdf
     restart: unless-stopped
     mem_limit: 3g

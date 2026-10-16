@@ -111,7 +111,7 @@ const OCR = ({ onPreviewFile, onComplete, onError }: BaseToolProps) => {
         ),
       },
       {
-        title: "Advanced",
+        title: t("ui.advanced"),
         isCollapsed: expandedStep !== "advanced",
         onCollapsedClick: hasResults
           ? handleSettingsReset

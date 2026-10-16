@@ -180,7 +180,8 @@ const FileGrid = ({
       {hasMoreFiles && onShowAll && (
         <Group justify="center" mt="md">
           <Button variant="light" onClick={onShowAll}>
-            {t("fileManager.showAll", "Show All")} ({sortedFiles.length} files)
+            {t("fileManager.showAll", "Show All")} ({sortedFiles.length}
+            {" " + t("ui.files")}
           </Button>
         </Group>
       )}

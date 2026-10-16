@@ -809,7 +809,7 @@ export default function AdminAdvancedSection() {
                     },
                   })
                 }
-                placeholder="Default: java.io.tmpdir/stirling-pdf"
+                placeholder={t("ui.defaultJavaIoTmpdirStirlingPdf")}
                 disabled={!loginEnabled}
               />
             </div>
@@ -834,7 +834,7 @@ export default function AdminAdvancedSection() {
                     },
                   })
                 }
-                placeholder="Default: baseTmpDir/libreoffice"
+                placeholder={t("ui.defaultBaseTmpDirLibreoffice")}
                 disabled={!loginEnabled}
               />
             </div>
@@ -859,7 +859,7 @@ export default function AdminAdvancedSection() {
                     },
                   })
                 }
-                placeholder="System temp directory path"
+                placeholder={t("ui.systemTempDirectoryPath")}
                 disabled={!loginEnabled}
               />
             </div>

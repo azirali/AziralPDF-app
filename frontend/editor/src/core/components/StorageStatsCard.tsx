@@ -73,7 +73,7 @@ const StorageStatsCard: React.FC<StorageStatsCardProps> = ({
             size="xs"
             onClick={onReloadFiles}
           >
-            Reload Files
+            {t("ui.reloadFiles")}
           </Button>
         </Group>
       </Group>

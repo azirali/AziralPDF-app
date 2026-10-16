@@ -296,7 +296,7 @@ export default function AdminEndpointsSection() {
                 }))}
                 searchable
                 clearable
-                placeholder="Select endpoints to disable"
+                placeholder={t("ui.selectEndpointsToDisable")}
                 comboboxProps={{ zIndex: 1400 }}
                 disabled={!loginEnabled}
               />
@@ -330,7 +330,7 @@ export default function AdminEndpointsSection() {
                 }))}
                 searchable
                 clearable
-                placeholder="Select groups to disable"
+                placeholder={t("ui.selectGroupsToDisable")}
                 comboboxProps={{ zIndex: 1400 }}
                 disabled={!loginEnabled}
               />

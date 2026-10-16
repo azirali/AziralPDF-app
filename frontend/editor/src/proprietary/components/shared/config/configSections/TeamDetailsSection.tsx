@@ -542,11 +542,11 @@ export default function TeamDetailsSection({
                         label={
                           <div>
                             <Text size="xs" fw={500}>
-                              Authentication:{" "}
+                              {t("ui.authentication")}{" "}
                               {user.authenticationType || "Unknown"}
                             </Text>
                             <Text size="xs">
-                              Last Activity:{" "}
+                              {t("ui.lastActivity")}{" "}
                               {userLastRequest[user.username]
                                 ? new Date(
                                     userLastRequest[user.username],

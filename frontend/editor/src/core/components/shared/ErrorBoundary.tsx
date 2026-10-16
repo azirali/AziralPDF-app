@@ -1,3 +1,4 @@
+import i18n from "@app/i18n";
 import React from "react";
 import { Text, Button, Stack } from "@mantine/core";
 
@@ -88,7 +89,7 @@ export default class ErrorBoundary extends React.Component<
           }}
         >
           <Text size="lg" fw={500} c="red">
-            Something went wrong
+            {i18n.t("ui.somethingWentWrong")}
           </Text>
           {process.env.NODE_ENV === "development" && this.state.error && (
             <>
@@ -109,7 +110,7 @@ export default class ErrorBoundary extends React.Component<
                     style={{ cursor: "pointer", marginBottom: "0.5rem" }}
                   >
                     <Text size="sm" component="span">
-                      Show stack trace
+                      {i18n.t("ui.showStackTrace")}
                     </Text>
                   </summary>
                   <pre
@@ -129,7 +130,7 @@ export default class ErrorBoundary extends React.Component<
             </>
           )}
           <Button onClick={this.retry} variant="light" mt="md">
-            Try Again
+            {i18n.t("ui.tryAgain")}
           </Button>
         </Stack>
       );

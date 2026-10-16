@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { AddStampParameters } from "@app/components/tools/addStamp/useAddStampParameters";
 import { pdfWorkerManager } from "@app/services/pdfWorkerManager";
@@ -28,6 +29,8 @@ export default function StampPreview({
   file,
   showQuickGrid,
 }: Props) {
+  const { t } = useTranslation();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerSize, setContainerSize] = useState<{
     width: number;
@@ -365,7 +368,7 @@ export default function StampPreview({
     <div>
       <div className={styles.previewHeader}>
         <div className={styles.divider} />
-        <div className={styles.previewLabel}>Preview Stamp</div>
+        <div className={styles.previewLabel}>{t("ui.previewStamp")}</div>
       </div>
       <div
         ref={containerRef}
@@ -378,7 +381,7 @@ export default function StampPreview({
           <PrivateContent>
             <img
               src={pageThumbnail}
-              alt="page preview"
+              alt={t("ui.pagePreview")}
               className={styles.pageThumbnail}
               draggable={false}
             />
@@ -413,7 +416,7 @@ export default function StampPreview({
           >
             <img
               src={imageMeta.url}
-              alt="stamp preview"
+              alt={t("ui.stampPreview")}
               className={styles.stampImage}
             />
             {itemHandles}
@@ -450,7 +453,7 @@ export default function StampPreview({
         )}
       </div>
       <div className={styles.previewDisclaimer}>
-        Preview is approximate. Final output may vary due to PDF font metrics.
+        {t("ui.previewIsApproximateFinalOutputMayVaryDueToPDFFontMetrics")}
       </div>
     </div>
   );

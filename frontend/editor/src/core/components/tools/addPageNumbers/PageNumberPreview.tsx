@@ -242,7 +242,7 @@ export default function PageNumberPreview({
           <PrivateContent>
             <img
               src={pageThumbnail}
-              alt="page preview"
+              alt={t("ui.pagePreview")}
               className={styles.pageThumbnail}
               draggable={false}
             />

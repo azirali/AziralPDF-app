@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+import i18n from "@app/i18n";
 import { useState, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
@@ -65,22 +67,22 @@ export function formatFileDate(lastModifiedTs: number): string {
 
   if (fileDay.getTime() === today.getTime()) {
     return lastModified
-      .toLocaleTimeString("en-US", {
+      .toLocaleTimeString(i18n.language, {
         hour: "numeric",
         minute: "2-digit",
-        hour12: true,
+        hour12: i18n.language.startsWith("en"),
       })
       .toLowerCase();
   }
   if (fileDay.getTime() === yesterday.getTime()) {
-    return "Yesterday";
+    return i18n.t("ui.yesterday");
   }
   const weekAgo = new Date(today);
   weekAgo.setDate(weekAgo.getDate() - 7);
   if (fileDay >= weekAgo) {
-    return lastModified.toLocaleDateString("en-US", { weekday: "long" });
+    return lastModified.toLocaleDateString(i18n.language, { weekday: "long" });
   }
-  return lastModified.toLocaleDateString("en-US", {
+  return lastModified.toLocaleDateString(i18n.language, {
     month: "short",
     day: "numeric",
   });
@@ -141,9 +143,11 @@ export function FileItem({
   onClick,
   onEyeClick,
 }: FileItemProps) {
+  const { t } = useTranslation();
+
   const ext = getFileExtension(name);
   const dateLabel = lastModified ? formatFileDate(lastModified) : "";
-  const typeLabel = ext ? ext.toUpperCase() : "File";
+  const typeLabel = ext ? ext.toUpperCase() : t("filesPage.file");
 
   // Only use raster thumbnails for PDFs and images — everything else uses scalable SVG icons
   const useRasterThumb = ext === "pdf" || IMAGE_EXTENSIONS.has(ext);
@@ -215,7 +219,7 @@ export function FileItem({
           }}
           tabIndex={-1}
           type="button"
-          aria-label={isViewedInViewer ? "Close viewer" : "Open in viewer"}
+          aria-label={t(isViewedInViewer ? "ui.closeViewer" : "ui.openViewer")}
         >
           <VisibilityOutlinedIcon
             className="file-sidebar-eye-open"

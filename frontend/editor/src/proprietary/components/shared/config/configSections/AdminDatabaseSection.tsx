@@ -698,7 +698,7 @@ export default function AdminDatabaseSection() {
                     onChange={(value) =>
                       setSettings({ ...settings, password: value })
                     }
-                    placeholder="Enter database password"
+                    placeholder={t("ui.enterDatabasePassword")}
                     disabled={!loginEnabled}
                   />
                 </div>

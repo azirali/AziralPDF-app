@@ -52,7 +52,7 @@ const PageLayout = (props: BaseToolProps) => {
     preview: <PageLayoutPreview parameters={base.params.parameters} />,
     steps: [
       {
-        title: "Layout settings",
+        title: t("ui.layoutSettings"),
         isCollapsed: accordion.getCollapsedState(PageLayoutStep.LAYOUT),
         onCollapsedClick: () =>
           accordion.handleStepToggle(PageLayoutStep.LAYOUT),
@@ -66,7 +66,7 @@ const PageLayout = (props: BaseToolProps) => {
         ),
       },
       {
-        title: "Advanced settings",
+        title: t("ui.advancedSettings"),
         isCollapsed: accordion.getCollapsedState(PageLayoutStep.ADVANCED),
         onCollapsedClick: () =>
           accordion.handleStepToggle(PageLayoutStep.ADVANCED),
@@ -80,7 +80,7 @@ const PageLayout = (props: BaseToolProps) => {
         ),
       },
       {
-        title: "Margins and borders",
+        title: t("ui.marginsAndBorders"),
         isCollapsed: accordion.getCollapsedState(
           PageLayoutStep.MARGINS_BORDERS,
         ),

@@ -1,3 +1,4 @@
+import i18n from "@app/i18n";
 import React, { useCallback, useState, useMemo, useRef } from "react";
 import { useDocumentState } from "@embedpdf/core/react";
 import { useScroll } from "@embedpdf/plugin-scroll/react";
@@ -170,8 +171,8 @@ const LinkToolbar: React.FC<LinkToolbarProps> = React.memo(
             e.stopPropagation();
             onDelete(annotationLink);
           }}
-          aria-label="Delete link"
-          title="Delete link"
+          aria-label={i18n.t("ui.deleteLink")}
+          title={i18n.t("ui.deleteLink")}
         >
           <TrashIcon />
         </button>

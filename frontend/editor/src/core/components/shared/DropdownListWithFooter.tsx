@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, { ReactNode, useState, useMemo } from "react";
 import {
   Stack,
@@ -71,6 +72,8 @@ const DropdownListWithFooter: React.FC<DropdownListWithFooterProps> = ({
   withinPortal = true,
   zIndex = Z_INDEX_AUTOMATE_DROPDOWN,
 }) => {
+  const { t } = useTranslation();
+
   const [searchTerm, setSearchTerm] = useState("");
 
   const isMultiValue = Array.isArray(value);
@@ -184,7 +187,7 @@ const DropdownListWithFooter: React.FC<DropdownListWithFooterProps> = ({
                 }}
               >
                 <TextInput
-                  placeholder="Search..."
+                  placeholder={t("ui.search")}
                   value={searchTerm}
                   onChange={handleSearchChange}
                   leftSection={<SearchIcon style={{ fontSize: "1rem" }} />}

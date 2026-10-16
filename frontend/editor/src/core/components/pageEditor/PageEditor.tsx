@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState, useCallback, useRef, useEffect, useMemo } from "react";
 import { Text, Center, Box, LoadingOverlay, Stack } from "@mantine/core";
 import { useFileState, useFileActions } from "@app/contexts/FileContext";
@@ -33,6 +34,8 @@ export interface PageEditorProps {
 }
 
 const PageEditor = ({ onFunctionsReady }: PageEditorProps) => {
+  const { t } = useTranslation();
+
   // Use split contexts to prevent re-renders
   const { state, selectors } = useFileState();
   const { actions } = useFileActions();
@@ -688,9 +691,9 @@ const PageEditor = ({ onFunctionsReady }: PageEditorProps) => {
             <Text size="lg" c="dimmed">
               📄
             </Text>
-            <Text c="dimmed">No PDF files loaded</Text>
+            <Text c="dimmed">{t("ui.noPDFFilesLoaded")}</Text>
             <Text size="sm" c="dimmed">
-              Add files to start editing pages
+              {t("ui.addFilesToStartEditingPages")}
             </Text>
           </Stack>
         </Center>

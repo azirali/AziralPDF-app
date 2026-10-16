@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 /**
  * FormFieldOverlay — Renders interactive HTML form widgets on top of a PDF page.
  *
@@ -193,6 +194,8 @@ function WidgetInputInner({
   onChange,
   onButtonClick,
 }: WidgetInputProps) {
+  const { t } = useTranslation();
+
   // Per-field value subscription — only this widget re-renders when its value changes
   const value = useFieldValue(field.name);
 
@@ -439,7 +442,7 @@ function WidgetInputInner({
             aria-invalid={!!error}
             {...captureStopProps}
           >
-            {!field.multiSelect && <option value="">— select —</option>}
+            {!field.multiSelect && <option value="">{t("ui.select")}</option>}
             {(field.options || []).map((opt, idx) => (
               <option key={opt} value={opt}>
                 {(field.displayOptions && field.displayOptions[idx]) || opt}

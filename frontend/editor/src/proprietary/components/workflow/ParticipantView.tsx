@@ -185,14 +185,18 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
     return (
       <Stack align="center" justify="center" p="xl">
         <Loader size="lg" />
-        <Text c="dimmed">Loading session...</Text>
+        <Text c="dimmed">{t("ui.loadingSession")}</Text>
       </Stack>
     );
   }
 
   if (error) {
     return (
-      <Alert icon={<InfoIcon fontSize="small" />} color="red" title="Error">
+      <Alert
+        icon={<InfoIcon fontSize="small" />}
+        color="red"
+        title={t("ui.error")}
+      >
         {error}
       </Alert>
     );
@@ -201,7 +205,7 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
   if (!session || !participant) {
     return (
       <Alert icon={<InfoIcon fontSize="small" />} color="orange">
-        Session not found or access denied.
+        {t("ui.sessionNotFoundOrAccessDenied")}
       </Alert>
     );
   }
@@ -209,15 +213,15 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "SIGNED":
-        return <Badge color="green">Signed</Badge>;
+        return <Badge color="green">{t("ui.signed")}</Badge>;
       case "DECLINED":
-        return <Badge color="red">Declined</Badge>;
+        return <Badge color="red">{t("ui.declined")}</Badge>;
       case "VIEWED":
-        return <Badge color="blue">Viewed</Badge>;
+        return <Badge color="blue">{t("ui.viewed")}</Badge>;
       case "NOTIFIED":
-        return <Badge color="yellow">Notified</Badge>;
+        return <Badge color="yellow">{t("ui.notified")}</Badge>;
       case "PENDING":
-        return <Badge color="gray">Pending</Badge>;
+        return <Badge color="gray">{t("ui.pending")}</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -254,7 +258,8 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
                 {session.documentName}
               </Text>
               <Text size="sm" c="dimmed">
-                From: {session.ownerUsername}
+                {t("ui.from") + " "}
+                {session.ownerUsername}
               </Text>
             </div>
             {getStatusBadge(participant.status)}
@@ -272,7 +277,8 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
 
           {session.dueDate && (
             <Text size="sm" c="dimmed">
-              Due Date: {session.dueDate}
+              {t("ui.dueDate") + " "}
+              {session.dueDate}
             </Text>
           )}
 
@@ -283,7 +289,7 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
               onClick={() => downloadDocument(token)}
               variant="light"
             >
-              Download Document
+              {t("ui.downloadDocument")}
             </Button>
           </Group>
         </Stack>
@@ -293,17 +299,17 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
         <Card shadow="sm" padding="md" radius="md" withBorder>
           <Stack gap="md">
             <Text fw={500} size="lg">
-              Sign Document
+              {t("ui.signDocument")}
             </Text>
 
             <Select
-              label="Certificate Type"
+              label={t("ui.certificateType")}
               value={certType}
               onChange={(value) => setCertType(value || "P12")}
               data={[
-                { value: "P12", label: "P12/PKCS12 Certificate" },
-                { value: "JKS", label: "JKS Keystore" },
-                { value: "SERVER", label: "Server Certificate (if available)" },
+                { value: "P12", label: t("ui.p12Certificate") },
+                { value: "JKS", label: t("ui.jksKeystore") },
+                { value: "SERVER", label: t("ui.serverCertificate") },
               ]}
               size="sm"
               data-testid="cert-type-select"
@@ -312,8 +318,8 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
             {certType !== "SERVER" && (
               <>
                 <FileInput
-                  label="Certificate File"
-                  placeholder="Select certificate file"
+                  label={t("ui.certificateFile")}
+                  placeholder={t("ui.selectCertificateFile")}
                   value={certFile}
                   onChange={setCertFile}
                   accept=".p12,.pfx,.jks"
@@ -322,7 +328,7 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
                 />
 
                 <TextInput
-                  label="Certificate Password"
+                  label={t("ui.certificatePassword")}
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.currentTarget.value)}
@@ -386,23 +392,23 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
             )}
 
             <TextInput
-              label="Location"
-              placeholder="e.g., San Francisco, CA"
+              label={t("ui.location")}
+              placeholder={t("ui.eGSanFranciscoCA")}
               value={location}
               onChange={(e) => setLocation(e.currentTarget.value)}
               size="sm"
             />
 
             <TextInput
-              label="Reason"
-              placeholder="e.g., Document approval"
+              label={t("ui.reason")}
+              placeholder={t("ui.eGDocumentApproval")}
               value={reason}
               onChange={(e) => setReason(e.currentTarget.value)}
               size="sm"
             />
 
             <TextInput
-              label="Page Number (optional)"
+              label={t("ui.pageNumberOptional")}
               type="number"
               value={pageNumber}
               onChange={(e) =>
@@ -423,7 +429,7 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
                 color="green"
                 data-testid="submit-signature-button"
               >
-                Submit Signature
+                {t("ui.submitSignature")}
               </Button>
 
               <Button
@@ -433,7 +439,7 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
                 variant="light"
                 data-testid="decline-button"
               >
-                Decline
+                {t("ui.decline")}
               </Button>
             </Group>
           </Stack>
@@ -442,14 +448,17 @@ const ParticipantView: React.FC<ParticipantViewProps> = ({ token }) => {
 
       {participant.hasCompleted && (
         <Alert icon={<CheckCircleIcon fontSize="small" />} color="green">
-          You have {participant.status === "SIGNED" ? "signed" : "declined"}{" "}
-          this document.
+          {t(
+            participant.status === "SIGNED"
+              ? "ui.signedDocument"
+              : "ui.declinedDocument",
+          )}
         </Alert>
       )}
 
       {participant.isExpired && (
         <Alert icon={<InfoIcon fontSize="small" />} color="orange">
-          Your access to this document has expired.
+          {t("ui.yourAccessToThisDocumentHasExpired")}
         </Alert>
       )}
     </Stack>

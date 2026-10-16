@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, {
   useCallback,
   useState,
@@ -97,6 +98,8 @@ const PageThumbnail: React.FC<PageThumbnailProps> = ({
   zoomLevel = 1.0,
   justMoved = false,
 }: PageThumbnailProps) => {
+  const { t } = useTranslation();
+
   const pageIndex = page.pageNumber - 1;
   const isSelected = Array.isArray(selectedPageIds)
     ? selectedPageIds.includes(page.id)
@@ -527,7 +530,8 @@ const PageThumbnail: React.FC<PageThumbnailProps> = ({
                 📄
               </Text>
               <Text size="xs" c="dimmed" mt={4}>
-                Page {page.pageNumber}
+                {t("ui.page") + " "}
+                {page.pageNumber}
               </Text>
             </div>
           )}

@@ -885,11 +885,11 @@ export default function PeopleSection() {
                       label={
                         <div>
                           <Text size="xs" fw={500}>
-                            Authentication:{" "}
+                            {t("ui.authentication")}{" "}
                             {user.authenticationType || "Unknown"}
                           </Text>
                           <Text size="xs">
-                            Last Activity:{" "}
+                            {t("ui.lastActivity")}{" "}
                             {user.lastRequest &&
                             new Date(user.lastRequest).getFullYear() >= 1980
                               ? new Date(user.lastRequest).toLocaleString()

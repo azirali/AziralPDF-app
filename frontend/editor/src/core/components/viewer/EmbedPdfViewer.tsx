@@ -1214,7 +1214,7 @@ const EmbedPdfViewerContent = ({
 
       {!effectiveFile ? (
         <Center style={{ flex: 1 }}>
-          <Text c="red">Error: No file provided to viewer</Text>
+          <Text c="red">{t("ui.errorNoFileProvidedToViewer")}</Text>
         </Center>
       ) : isCurrentFileEncrypted ? (
         <Center style={{ flex: 1 }}>

@@ -186,7 +186,15 @@ export default function BillingPanel({
         <Text c="dimmed">{t("aziralBilling.subtitle")}</Text>
         {!publicPage && license && (
           <Group gap="sm">
-            <Badge variant="light">{license.tier}</Badge>
+            <Badge variant="light">
+              {t(
+                license.tier === "ENTERPRISE"
+                  ? "aziralBilling.enterprisePlan"
+                  : license.tier === "PRO"
+                    ? "aziralBilling.proPlan"
+                    : "aziralBilling.freePlan",
+              )}
+            </Badge>
             <Text size="sm">
               {license.expiresAt
                 ? t("aziralBilling.activeUntil", {
@@ -248,7 +256,7 @@ export default function BillingPanel({
       <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
         <Paper withBorder radius="md" p="lg">
           <Stack h="100%" gap="md">
-            <Title order={3}>Free</Title>
+            <Title order={3}>{t("aziralBilling.freePlan")}</Title>
             <Text size="2rem" fw={700}>
               {money(0)}
             </Text>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 /**
  * FormFill: The tool component that renders in the left ToolPanel
  * when the "Fill Form" tool is selected.
@@ -120,6 +121,8 @@ const _MODE_TABS: ModeTabDef[] = [
 // ---------------------------------------------------------------------------
 
 const FormFill = (_props: BaseToolProps) => {
+  const { t } = useTranslation();
+
   const { selectedTool } = useNavigation();
   const { selectors, state: fileState } = useFileState();
 
@@ -201,7 +204,7 @@ const FormFill = (_props: BaseToolProps) => {
       setTimeout(() => URL.revokeObjectURL(url), 250);
     } catch (err) {
       console.error("[FormFill] CSV extraction failed:", err);
-      setSaveError("Failed to extract CSV");
+      setSaveError(t("ui.extractCsvFailed"));
     } finally {
       setExtracting(false);
     }
@@ -220,7 +223,7 @@ const FormFill = (_props: BaseToolProps) => {
       setTimeout(() => URL.revokeObjectURL(url), 250);
     } catch (err) {
       console.error("[FormFill] XLSX extraction failed:", err);
-      setSaveError("Failed to extract XLSX");
+      setSaveError(t("ui.extractXlsxFailed"));
     } finally {
       setExtracting(false);
     }
@@ -243,7 +246,7 @@ const FormFill = (_props: BaseToolProps) => {
     if (!currentFile || !isStirlingFile(currentFile)) return;
 
     if (!validateForm()) {
-      setSaveError("Please fill in all required fields");
+      setSaveError(t("ui.requiredFieldsMissing"));
       return;
     }
 
@@ -268,10 +271,10 @@ const FormFill = (_props: BaseToolProps) => {
     } catch (err: any) {
       const message =
         err?.response?.status === 413
-          ? "File too large. Try reducing the PDF size first."
+          ? t("ui.fileTooLarge")
           : err?.response?.status === 400
-            ? "Invalid form data. Please check all fields."
-            : err?.message || "Failed to save filled form";
+            ? t("ui.invalidFormData")
+            : err?.message || t("ui.saveFormFailed");
       setSaveError(message);
       console.error("[FormFill] Save failed:", err);
     } finally {
@@ -429,7 +432,7 @@ const FormFill = (_props: BaseToolProps) => {
                 >
                   <Loader size={14} />
                   <Text size="xs" c="dimmed">
-                    Analysing form fields...
+                    {t("ui.analysingFormFields")}
                   </Text>
                 </div>
                 <Skeleton height={48} radius="sm" />
@@ -457,10 +460,12 @@ const FormFill = (_props: BaseToolProps) => {
                 <div>
                   <div className={styles.progressRow}>
                     <span className={styles.progressLabel}>
-                      {filledCount} / {fillableCount} filled
+                      {filledCount} / {fillableCount}
+                      {" " + t("ui.filled")}
                       {requiredCount > 0 && (
                         <span style={{ marginLeft: "0.5rem", opacity: 0.7 }}>
-                          ({filledRequiredCount}/{requiredCount} req.)
+                          ({filledRequiredCount}/{requiredCount}
+                          {" " + t("ui.reqLabel")}
                         </span>
                       )}
                     </span>
@@ -488,7 +493,7 @@ const FormFill = (_props: BaseToolProps) => {
 
                 {/* Flatten toggle */}
                 <Switch
-                  label="Flatten after filling"
+                  label={t("ui.flattenAfterFilling")}
                   checked={flatten}
                   onChange={(e) => setFlatten(e.currentTarget.checked)}
                   size="xs"
@@ -507,15 +512,19 @@ const FormFill = (_props: BaseToolProps) => {
                       loading={saving}
                       disabled={!formState.isDirty && !flattenChanged}
                     >
-                      Save
+                      {t("ui.save")}
                     </Button>
 
-                    <Tooltip label="Re-scan fields" withArrow position="bottom">
+                    <Tooltip
+                      label={t("ui.reScanFields")}
+                      withArrow
+                      position="bottom"
+                    >
                       <ActionIcon
                         variant="light"
                         size="md"
                         onClick={handleRefresh}
-                        aria-label="Re-scan form fields"
+                        aria-label={t("ui.reScanFormFields")}
                       >
                         <RefreshIcon sx={{ fontSize: 16 }} />
                       </ActionIcon>
@@ -574,7 +583,7 @@ const FormFill = (_props: BaseToolProps) => {
                 <div className={styles.emptyState}>
                   <DescriptionIcon className={styles.emptyStateIcon} />
                   <span className={styles.emptyStateText}>
-                    No fillable form fields found in this PDF.
+                    {t("ui.noFillableFormFieldsFoundInThisPDF")}
                   </span>
                 </div>
               )}
@@ -591,7 +600,8 @@ const FormFill = (_props: BaseToolProps) => {
                       style={i === 0 ? { marginTop: 0 } : undefined}
                     >
                       <Text className={styles.pageDividerLabel}>
-                        Page {pageIdx + 1}
+                        {t("ui.page") + " "}
+                        {pageIdx + 1}
                       </Text>
                     </div>
 
@@ -629,7 +639,9 @@ const FormFill = (_props: BaseToolProps) => {
                               {field.label || field.name}
                             </span>
                             {field.required && (
-                              <span className={styles.fieldRequired}>req</span>
+                              <span className={styles.fieldRequired}>
+                                {t("ui.req")}
+                              </span>
                             )}
                           </div>
 
@@ -671,10 +683,10 @@ const FormFill = (_props: BaseToolProps) => {
                   <span className={styles.unsavedDot} />
                 )}
                 {formState.isDirty || flattenChanged
-                  ? "Unsaved changes"
-                  : "All saved"}
+                  ? t("ui.unsavedChanges")
+                  : t("ui.allSaved")}
               </span>
-              <span>Ctrl+S to save</span>
+              <span>{t("ui.ctrlSToSave")}</span>
             </div>
           )}
         </>

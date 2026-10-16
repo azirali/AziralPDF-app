@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState, useEffect, useCallback, useRef } from "react";
 import {
   Box,
@@ -49,6 +50,8 @@ export function LayerSidebar({
   onApplyLayers,
   onLayersDetected,
 }: LayerSidebarProps) {
+  const { t } = useTranslation();
+
   const [layers, setLayers] = useState<LayerInfo[]>([]);
   const [visibility, setVisibility] = useState<Record<string, boolean>>({});
   const [status, setStatus] = useState<LoadStatus>("idle");
@@ -332,7 +335,7 @@ export function LayerSidebar({
             <LayersIcon fontSize="small" />
           </span>
           <Text fw={600} size="sm" tt="uppercase" lts={0.5} style={{ flex: 1 }}>
-            Layers
+            {t("ui.layers")}
           </Text>
           {isApplying && <Loader size="xs" type="dots" />}
         </div>
@@ -344,8 +347,8 @@ export function LayerSidebar({
               size="sm"
               onClick={showAll}
               disabled={allVisible || isApplying}
-              aria-label="Show all layers"
-              title="Show all"
+              aria-label={t("ui.showAllLayers")}
+              title={t("ui.showAll")}
             >
               <VisibilityIcon sx={{ fontSize: "1rem" }} />
             </ActionIcon>
@@ -354,8 +357,8 @@ export function LayerSidebar({
               size="sm"
               onClick={hideAll}
               disabled={allHidden || isApplying}
-              aria-label="Hide all layers"
-              title="Hide all"
+              aria-label={t("ui.hideAllLayers")}
+              title={t("ui.hideAll")}
             >
               <VisibilityOffIcon sx={{ fontSize: "1rem" }} />
             </ActionIcon>
@@ -369,7 +372,7 @@ export function LayerSidebar({
           {status === "idle" && (
             <div className="sidebar-base__empty-state">
               <Text size="sm" c="dimmed" ta="center">
-                Open a PDF to view its layers.
+                {t("ui.openAPDFToViewItsLayers")}
               </Text>
             </div>
           )}
@@ -384,7 +387,7 @@ export function LayerSidebar({
             >
               <Loader size="md" type="dots" />
               <Text size="sm" ta="center">
-                Loading layers...
+                {t("ui.loadingLayers")}
               </Text>
             </Stack>
           )}
@@ -400,7 +403,7 @@ export function LayerSidebar({
           {status === "no-layers" && (
             <div className="sidebar-base__empty-state">
               <Text size="sm" c="dimmed" ta="center">
-                This document has no layers.
+                {t("ui.thisDocumentHasNoLayers")}
               </Text>
             </div>
           )}

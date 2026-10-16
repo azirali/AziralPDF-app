@@ -203,7 +203,7 @@ export function SearchInterface({ visible, onClose }: SearchInterfaceProps) {
           variant="subtle"
           size="sm"
           onClick={handleCloseClick}
-          aria-label="Close search"
+          aria-label={t("ui.closeSearch")}
         >
           <LocalIcon icon="close" width="1rem" height="1rem" />
         </ActionIcon>
@@ -227,7 +227,7 @@ export function SearchInterface({ visible, onClose }: SearchInterfaceProps) {
               <ActionIcon
                 variant="subtle"
                 onClick={handleClearSearch}
-                aria-label="Clear search"
+                aria-label={t("ui.clearSearch")}
               >
                 <LocalIcon icon="close" width="0.875rem" height="0.875rem" />
               </ActionIcon>
@@ -277,7 +277,7 @@ export function SearchInterface({ visible, onClose }: SearchInterfaceProps) {
             size="sm"
             onClick={handlePrevious}
             disabled={!resultInfo || resultInfo.currentIndex <= 1}
-            aria-label="Previous result"
+            aria-label={t("ui.previousResult")}
           >
             <LocalIcon icon="keyboard-arrow-up" width="1rem" height="1rem" />
           </ActionIcon>
@@ -288,7 +288,7 @@ export function SearchInterface({ visible, onClose }: SearchInterfaceProps) {
             disabled={
               !resultInfo || resultInfo.currentIndex >= resultInfo.totalResults
             }
-            aria-label="Next result"
+            aria-label={t("ui.nextResult")}
           >
             <LocalIcon icon="keyboard-arrow-down" width="1rem" height="1rem" />
           </ActionIcon>

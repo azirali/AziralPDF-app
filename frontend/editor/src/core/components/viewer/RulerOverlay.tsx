@@ -1,3 +1,4 @@
+import i18n from "@app/i18n";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useViewer } from "@app/contexts/ViewerContext";
 
@@ -1021,7 +1022,7 @@ export const RulerOverlay = React.forwardRef<
             fontWeight={600}
             style={{ userSelect: "none" }}
           >
-            Clear all
+            {i18n.t("ui.clearAll")}
           </text>
         </g>
       )}

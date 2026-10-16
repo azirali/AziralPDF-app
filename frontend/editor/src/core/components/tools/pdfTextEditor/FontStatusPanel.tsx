@@ -111,7 +111,7 @@ const FontDetailItem = ({ analysis }: { analysis: FontAnalysis }) => {
                 variant="outline"
                 style={{ flexShrink: 0 }}
               >
-                subset
+                {t("ui.subset")}
               </Badge>
             )}
           </Group>

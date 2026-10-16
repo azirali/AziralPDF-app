@@ -50,6 +50,19 @@ describe("server language configuration", () => {
     expect(i18n.t("audit.fallback")).toBe("Plans");
   });
 
+  it("does not cancel a server locale while its resources are still loading", async () => {
+    await i18n.changeLanguage("en-GB");
+    const changeLanguage = vi
+      .spyOn(i18n, "changeLanguage")
+      .mockResolvedValue(i18n.t);
+    try {
+      updateSupportedLanguages(["ru_RU", "en_GB"], "ru-RU");
+      expect(changeLanguage).toHaveBeenCalledExactlyOnceWith("ru-RU");
+    } finally {
+      changeLanguage.mockRestore();
+    }
+  });
+
   it("restores available languages when the server removes the filter", () => {
     updateSupportedLanguages(["ru-RU"], "ru-RU");
     updateSupportedLanguages(null);

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Tooltip, ActionIcon } from "@mantine/core";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
@@ -51,6 +52,8 @@ const PageEditorControls = ({
   displayDocument,
   splitPositions,
 }: PageEditorControlsProps) => {
+  const { t } = useTranslation();
+
   // Calculate split tooltip text using smart toggle logic
   const getSplitTooltip = () => {
     if (!splitPositions || !displayDocument || selectedPageIds.length === 0) {
@@ -131,7 +134,7 @@ const PageEditorControls = ({
         }}
       >
         {/* Undo/Redo */}
-        <Tooltip label="Undo">
+        <Tooltip label={t("ui.undo")}>
           <ActionIcon
             onClick={onUndo}
             disabled={!canUndo}
@@ -145,7 +148,7 @@ const PageEditorControls = ({
             <UndoIcon />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label="Redo">
+        <Tooltip label={t("ui.redo")}>
           <ActionIcon
             onClick={onRedo}
             disabled={!canRedo}
@@ -170,7 +173,7 @@ const PageEditorControls = ({
         />
 
         {/* Page Operations */}
-        <Tooltip label="Rotate Selected Left">
+        <Tooltip label={t("ui.rotateSelectedLeft")}>
           <ActionIcon
             onClick={() => onRotate("left")}
             disabled={selectedPageIds.length === 0}
@@ -187,7 +190,7 @@ const PageEditorControls = ({
             <RotateLeftIcon />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label="Rotate Selected Right">
+        <Tooltip label={t("ui.rotateSelectedRight")}>
           <ActionIcon
             onClick={() => onRotate("right")}
             disabled={selectedPageIds.length === 0}
@@ -204,7 +207,7 @@ const PageEditorControls = ({
             <RotateRightIcon />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label="Delete Selected">
+        <Tooltip label={t("ui.deleteSelected")}>
           <ActionIcon
             onClick={onDelete}
             disabled={selectedPageIds.length === 0}

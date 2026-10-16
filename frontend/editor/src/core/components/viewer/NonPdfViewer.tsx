@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useCallback, useMemo } from "react";
 import { Box, Button, Center, Stack, Text } from "@mantine/core";
 import ArticleIcon from "@mui/icons-material/Article";
@@ -31,6 +32,8 @@ export interface NonPdfViewerProps extends ViewerProps {
 }
 
 export function NonPdfViewer({ file }: NonPdfViewerProps) {
+  const { t } = useTranslation();
+
   const fileType = useMemo(() => detectNonPdfFileType(file), [file]);
 
   const { handleToolSelect, toolAvailability } = useToolWorkflow();
@@ -77,7 +80,7 @@ export function NonPdfViewer({ file }: NonPdfViewerProps) {
                 }}
               />
               <Text c="dimmed" size="sm">
-                Preview not available for this file type
+                {t("ui.previewNotAvailableForThisFileType")}
               </Text>
               {isConvertAvailable && (
                 <Button
@@ -86,7 +89,7 @@ export function NonPdfViewer({ file }: NonPdfViewerProps) {
                   leftSection={<PictureAsPdfIcon />}
                   onClick={handleConvertToPdf}
                 >
-                  Convert to PDF
+                  {t("ui.convertToPDF")}
                 </Button>
               )}
             </Stack>
@@ -125,6 +128,8 @@ export function NonPdfViewer({ file }: NonPdfViewerProps) {
 // ─── Wrapper that resolves the active file from FileContext ───────────────────
 
 export function NonPdfViewerWrapper(props: ViewerProps) {
+  const { t } = useTranslation();
+
   const { selectors } = useFileState();
   const activeFiles = selectors.getFiles();
   const { activeFileIndex } = useViewer();
@@ -136,7 +141,7 @@ export function NonPdfViewerWrapper(props: ViewerProps) {
     return (
       <Center style={{ flex: 1 }}>
         <Text c="dimmed" size="sm">
-          No file loaded
+          {t("ui.noFileLoaded")}
         </Text>
       </Center>
     );

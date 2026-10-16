@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useState, useEffect, useRef } from "react";
 import { Box, ScrollArea } from "@mantine/core";
 import { useViewer } from "@app/contexts/ViewerContext";
@@ -14,6 +15,8 @@ export function ThumbnailSidebar({
   onToggle: _onToggle,
   activeFileId,
 }: ThumbnailSidebarProps) {
+  const { t } = useTranslation();
+
   const { getScrollState, scrollActions, getThumbnailAPI } = useViewer();
   const [thumbnails, setThumbnails] = useState<{ [key: number]: string }>({});
 
@@ -244,7 +247,7 @@ export function ThumbnailSidebar({
                             fontSize: "12px",
                           }}
                         >
-                          Failed
+                          {t("ui.failed")}
                         </div>
                       ) : (
                         <div
@@ -261,7 +264,7 @@ export function ThumbnailSidebar({
                             fontSize: "12px",
                           }}
                         >
-                          Loading...
+                          {t("ui.loading")}
                         </div>
                       )}
 
@@ -276,7 +279,8 @@ export function ThumbnailSidebar({
                               : "var(--text-muted)",
                         }}
                       >
-                        Page {pageIndex + 1}
+                        {t("ui.page") + " "}
+                        {pageIndex + 1}
                       </div>
                     </Box>
                   ),

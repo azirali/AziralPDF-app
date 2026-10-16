@@ -1,7 +1,10 @@
+import { useTranslation } from "react-i18next";
 /**
  * Loading fallback component for i18next suspense
  */
 export function LoadingFallback() {
+  const { t } = useTranslation();
+
   return (
     <div
       style={{
@@ -13,7 +16,7 @@ export function LoadingFallback() {
         color: "#666",
       }}
     >
-      Loading...
+      {t("ui.loading")}
     </div>
   );
 }

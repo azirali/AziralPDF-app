@@ -26,7 +26,7 @@ const BookletImposition = (props: BaseToolProps) => {
     },
     steps: [
       {
-        title: "Settings",
+        title: t("ui.toolSettings"),
         isCollapsed: base.settingsCollapsed,
         onCollapsedClick: base.settingsCollapsed
           ? base.handleSettingsReset

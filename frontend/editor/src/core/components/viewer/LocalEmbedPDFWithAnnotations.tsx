@@ -1,3 +1,4 @@
+import i18n from "@app/i18n";
 import {
   useEffect,
   useMemo,
@@ -345,7 +346,7 @@ export const LocalEmbedPDFWithAnnotations = forwardRef<
           <Stack align="center" gap="md">
             <div style={{ fontSize: "24px" }}>📄</div>
             <Text c="dimmed" size="sm">
-              No PDF provided
+              {i18n.t("ui.noPDFProvided")}
             </Text>
           </Stack>
         </Center>
@@ -362,7 +363,8 @@ export const LocalEmbedPDFWithAnnotations = forwardRef<
           <Stack align="center" gap="md">
             <div style={{ fontSize: "24px" }}>❌</div>
             <Text c="red" size="sm" style={{ textAlign: "center" }}>
-              Error loading PDF engine: {error.message}
+              {i18n.t("ui.errorLoadingPDFEngine") + " "}
+              {error.message}
             </Text>
           </Stack>
         </Center>
@@ -653,7 +655,9 @@ export const LocalEmbedPDFWithAnnotations = forwardRef<
                                               ),
                                             );
                                           }}
-                                          aria-label="Delete signature"
+                                          aria-label={i18n.t(
+                                            "ui.deleteSignature",
+                                          )}
                                         >
                                           <CloseIcon
                                             style={{ fontSize: "0.8rem" }}
@@ -755,7 +759,7 @@ export const LocalEmbedPDFWithAnnotations = forwardRef<
                                       >
                                         <img
                                           src={preview.signatureData}
-                                          alt="Signature preview"
+                                          alt={i18n.t("ui.signaturePreview")}
                                           style={{
                                             width: "100%",
                                             height: "100%",

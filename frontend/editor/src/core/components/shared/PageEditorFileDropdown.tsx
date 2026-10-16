@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { Menu, Loader, Group, Text, Checkbox } from "@mantine/core";
 import { LocalIcon } from "@app/components/shared/LocalIcon";
@@ -170,6 +171,8 @@ export const PageEditorFileDropdown: React.FC<PageEditorFileDropdownProps> = ({
   selectedCount,
   totalCount,
 }) => {
+  const { t } = useTranslation();
+
   const { openFilesModal } = useFilesModalContext();
 
   return (
@@ -189,7 +192,8 @@ export const PageEditorFileDropdown: React.FC<PageEditorFileDropdownProps> = ({
             />
           )}
           <span className="ph-no-capture">
-            {selectedCount}/{totalCount} files selected
+            {selectedCount}/{totalCount}
+            {" " + t("ui.filesSelected")}
           </span>
           <KeyboardArrowDownIcon fontSize="small" />
         </div>
@@ -254,7 +258,7 @@ export const PageEditorFileDropdown: React.FC<PageEditorFileDropdownProps> = ({
               style={{ color: "var(--mantine-color-text)" }}
               className="ph-no-capture"
             >
-              Add File
+              {t("ui.addFile")}
             </Text>
           </Group>
         </div>

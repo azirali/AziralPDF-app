@@ -269,10 +269,11 @@ export function updateSupportedLanguages(
   const currentLang = normalizeLanguageCode(i18n.language || "");
   if (currentLang && !validLanguages.includes(currentLang)) {
     // Use ServerDefault priority to override browser detection when language not in whitelist
-    setLanguageWithPriority(fallback, LanguageSource.ServerDefault);
+    if (setLanguageWithPriority(fallback, LanguageSource.ServerDefault)) return;
   } else if (validDefault && validLanguages.includes(validDefault)) {
     // Apply server default (respects user choice if already set)
-    setLanguageWithPriority(validDefault, LanguageSource.ServerDefault);
+    if (setLanguageWithPriority(validDefault, LanguageSource.ServerDefault))
+      return;
   }
   void i18n.changeLanguage(i18n.language);
 }

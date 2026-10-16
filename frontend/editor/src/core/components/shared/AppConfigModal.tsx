@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import React, {
   useMemo,
   useState,
@@ -33,6 +34,8 @@ const AppConfigModalInner: React.FC<AppConfigModalProps> = ({
   opened,
   onClose,
 }) => {
+  const { t } = useTranslation();
+
   const [active, setActive] = useState<NavKey>("general");
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -342,7 +345,7 @@ const AppConfigModalInner: React.FC<AppConfigModalProps> = ({
                   ref={closeButtonRef}
                   variant="subtle"
                   onClick={handleClose}
-                  aria-label="Close"
+                  aria-label={t("ui.close")}
                   data-autofocus
                 >
                   <LocalIcon icon="close-rounded" width={18} height={18} />

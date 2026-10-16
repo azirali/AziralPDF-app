@@ -45,7 +45,7 @@ const PageSelectionInput = ({
               height="1rem"
               style={{ color: "var(--text-instruction)" }}
             />
-            <Text>Page Selection</Text>
+            <Text>{t("ui.pageSelection")}</Text>
           </Flex>
         </Tooltip>
         {typeof advancedOpened === "boolean" && (

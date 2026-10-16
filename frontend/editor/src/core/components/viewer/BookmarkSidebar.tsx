@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import {
   Box,
@@ -75,6 +76,8 @@ export const BookmarkSidebar = ({
   documentCacheKey,
   preloadCacheKeys = [],
 }: BookmarkSidebarProps) => {
+  const { t } = useTranslation();
+
   const { bookmarkActions, scrollActions, hasBookmarkSupport } = useViewer();
   const [expanded, setExpanded] = useState<Record<string, boolean>>({});
   const [searchTerm, setSearchTerm] = useState("");
@@ -440,7 +443,8 @@ export const BookmarkSidebar = ({
               </Text>
               {pageNumber && (
                 <Text size="xs" c="dimmed" className="bookmark-item__page">
-                  Page {pageNumber}
+                  {t("ui.page") + " "}
+                  {pageNumber}
                 </Text>
               )}
             </div>
@@ -496,7 +500,7 @@ export const BookmarkSidebar = ({
             <BookmarksIcon />
           </span>
           <Text fw={600} size="sm" tt="uppercase" lts={0.5}>
-            Bookmarks
+            {t("ui.bookmarks")}
           </Text>
         </div>
         {bookmarkSupport && bookmarksWithIds.length > 0 && (
@@ -506,8 +510,8 @@ export const BookmarkSidebar = ({
                 variant="subtle"
                 size="sm"
                 onClick={expandAll}
-                aria-label="Expand all bookmarks"
-                title="Expand all"
+                aria-label={t("ui.expandAllBookmarks")}
+                title={t("ui.expandAll")}
               >
                 <LocalIcon icon="unfold-more" width="1.1rem" height="1.1rem" />
               </ActionIcon>
@@ -516,8 +520,8 @@ export const BookmarkSidebar = ({
                 variant="subtle"
                 size="sm"
                 onClick={collapseAll}
-                aria-label="Collapse all bookmarks"
-                title="Collapse all"
+                aria-label={t("ui.collapseAllBookmarks")}
+                title={t("ui.collapseAll")}
               >
                 <LocalIcon icon="unfold-less" width="1.1rem" height="1.1rem" />
               </ActionIcon>
@@ -533,7 +537,7 @@ export const BookmarkSidebar = ({
       >
         <TextInput
           value={searchTerm}
-          placeholder="Search bookmarks"
+          placeholder={t("ui.searchBookmarks")}
           onChange={(event) => setSearchTerm(event.currentTarget.value)}
           leftSection={
             <LocalIcon icon="search" width="1.1rem" height="1.1rem" />
@@ -547,7 +551,7 @@ export const BookmarkSidebar = ({
           {!bookmarkSupport && (
             <div className="sidebar-base__empty-state">
               <Text size="sm" c="dimmed" ta="center">
-                Bookmark support is unavailable for this viewer.
+                {t("ui.bookmarkSupportIsUnavailableForThisViewer")}
               </Text>
             </div>
           )}
@@ -555,7 +559,7 @@ export const BookmarkSidebar = ({
           {bookmarkSupport && showNoDocument && (
             <div className="sidebar-base__empty-state">
               <Text size="sm" c="dimmed" ta="center">
-                Open a PDF to view its bookmarks.
+                {t("ui.openAPDFToViewItsBookmarks")}
               </Text>
             </div>
           )}
@@ -566,7 +570,7 @@ export const BookmarkSidebar = ({
                 {currentError}
               </Text>
               <Button size="xs" variant="light" onClick={requestReload}>
-                Retry
+                {t("ui.retry")}
               </Button>
             </Stack>
           )}
@@ -581,7 +585,7 @@ export const BookmarkSidebar = ({
             >
               <Loader size="md" type="dots" />
               <Text size="sm" ta="center">
-                Loading bookmarks...
+                {t("ui.loadingBookmarks")}
               </Text>
             </Stack>
           )}
@@ -589,7 +593,7 @@ export const BookmarkSidebar = ({
           {showEmptyState && (
             <div className="sidebar-base__empty-state">
               <Text size="sm" c="dimmed" ta="center">
-                No bookmarks in this document
+                {t("ui.noBookmarksInThisDocument")}
               </Text>
             </div>
           )}
@@ -603,7 +607,7 @@ export const BookmarkSidebar = ({
           {showSearchEmpty && (
             <div className="sidebar-base__empty-state">
               <Text size="sm" c="dimmed" ta="center">
-                No bookmarks match your search
+                {t("ui.noBookmarksMatchYourSearch")}
               </Text>
             </div>
           )}

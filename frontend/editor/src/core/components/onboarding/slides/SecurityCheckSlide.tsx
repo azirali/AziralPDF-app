@@ -1,9 +1,9 @@
+import { useTranslation } from "react-i18next";
 import React from "react";
 import { Select } from "@mantine/core";
 import { SlideConfig } from "@app/types/types";
 import LocalIcon from "@app/components/shared/LocalIcon";
 import { UNIFIED_CIRCLE_CONFIG } from "@app/components/onboarding/slides/unifiedBackgroundConfig";
-import i18n from "@app/i18n";
 import styles from "@app/components/onboarding/InitialOnboardingModal/InitialOnboardingModal.module.css";
 
 interface SecurityCheckSlideProps {
@@ -15,6 +15,8 @@ export default function SecurityCheckSlide({
   selectedRole,
   onRoleSelect,
 }: SecurityCheckSlideProps): SlideConfig {
+  const { t } = useTranslation();
+
   return {
     key: "security-check",
     title: "Security Check",
@@ -29,7 +31,7 @@ export default function SecurityCheckSlide({
               style={{ color: "#F04438", flexShrink: 0 }}
             />
             <span>
-              {i18n.t(
+              {t(
                 "onboarding.securityCheck.message",
                 "The application has undergone significant changes recently. Your server admin's attention may be required. Please confirm your role to continue.",
               )}
@@ -37,7 +39,7 @@ export default function SecurityCheckSlide({
           </div>
 
           <Select
-            placeholder="Confirm your role"
+            placeholder={t("ui.confirmYourRole")}
             value={selectedRole}
             data={[
               { value: "admin", label: "Admin" },

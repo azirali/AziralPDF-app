@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   useCallback,
   useEffect,
@@ -31,6 +32,8 @@ interface MFASetupSlideProps {
 }
 
 function MFASetupContent({ onMfaSetupComplete }: MFASetupSlideProps) {
+  const { t } = useTranslation();
+
   const [mfaSetupData, setMfaSetupData] = useState<MfaSetupResponse | null>(
     null,
   );
@@ -136,15 +139,15 @@ function MFASetupContent({ onMfaSetupComplete }: MFASetupSlideProps) {
 
       <Stack gap="xs">
         <Text size="sm" fw={600}>
-          Step-by-step
+          {t("ui.stepByStep")}
         </Text>
         <ol className={styles.mfaSteps}>
-          <li>Open Google Authenticator, Authy, or 1Password.</li>
-          <li>Scan the QR code or enter the setup key below.</li>
-          <li>Enter the 6-digit code from your app.</li>
+          <li>{t("ui.openGoogleAuthenticatorAuthyOr1Password")}</li>
+          <li>{t("ui.scanTheQRCodeOrEnterTheSetupKeyBelow")}</li>
+          <li>{t("ui.enterThe6DigitCodeFromYourApp")}</li>
         </ol>
         <Text size="xs" c="dimmed">
-          Setup key (manual entry)
+          {t("ui.setupKeyManualEntry")}
         </Text>
         <TextInput
           value={mfaSetupData.secret ?? ""}
@@ -161,9 +164,7 @@ function MFASetupContent({ onMfaSetupComplete }: MFASetupSlideProps) {
       <div className={styles.mfaCard}>
         <Stack gap="md">
           <Text size="sm" c="dimmed">
-            Secure your account by linking an authenticator app. Scan the QR
-            code or enter the setup key, then confirm the 6-digit code to
-            finish.
+            {t("ui.secureYourAccountByLinkingAnAuthenticatorAppScanTheQRCode")}
           </Text>
 
           {mfaError && (
@@ -179,7 +180,7 @@ function MFASetupContent({ onMfaSetupComplete }: MFASetupSlideProps) {
           {mfaLoading && !isReady && (
             <Group gap="sm">
               <Loader size="sm" />
-              <Text size="sm">Generating your QR code…</Text>
+              <Text size="sm">{t("ui.generatingYourQRCode")}</Text>
             </Group>
           )}
 
@@ -189,7 +190,7 @@ function MFASetupContent({ onMfaSetupComplete }: MFASetupSlideProps) {
             <Stack gap="sm">
               <TextInput
                 id="mfa-setup-code"
-                label="Authentication code"
+                label={t("ui.authenticationCode")}
                 placeholder="123456"
                 value={mfaSetupCode}
                 onChange={(event) =>
@@ -208,7 +209,7 @@ function MFASetupContent({ onMfaSetupComplete }: MFASetupSlideProps) {
                   onClick={fetchMfaSetup}
                   disabled={mfaLoading || submitting || setupComplete}
                 >
-                  Regenerate QR code
+                  {t("ui.regenerateQRCode")}
                 </Button>
                 <Button
                   type="submit"
@@ -217,16 +218,16 @@ function MFASetupContent({ onMfaSetupComplete }: MFASetupSlideProps) {
                     !isReady || setupComplete || mfaSetupCode.length < 6
                   }
                 >
-                  Enable MFA
+                  {t("ui.enableMFA")}
                 </Button>
                 <Button type="button" variant="light" onClick={onLogout}>
-                  Logout
+                  {t("ui.logout")}
                 </Button>
               </Group>
 
               {setupComplete && (
                 <Alert color="green" variant="light">
-                  MFA has been enabled. You can now continue.
+                  {t("ui.mfaHasBeenEnabledYouCanNowContinue")}
                 </Alert>
               )}
             </Stack>

@@ -93,7 +93,7 @@ export const UploadSignatureImage: React.FC<UploadSignatureImageProps> = ({
           >
             <Image
               src={signature}
-              alt="Signature"
+              alt={t("ui.signature")}
               fit="contain"
               style={{ maxHeight: "150px", maxWidth: "100%" }}
             />
