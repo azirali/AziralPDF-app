@@ -1,0 +1,395 @@
+{
+  "url": "https://pdf.aziral.com",
+  "verifiedAt": "2026-10-16T03:00:29.835208+00:00",
+  "sourceCommit": "7173aa8e37eba7e94bd4a227ea0fcf4c92ae0d40",
+  "image": "aziralpdf:audit-20261015-r3",
+  "imageId": "sha256:37dc676ff8c4b7b3288fe27a9acf989d6121beb2b24d9c65ca5d4e8f53a52c12",
+  "sourceFilesVerified": 58,
+  "sourceOverlaySha256": "0e776a254c0af875f85170c0955486733a53233ae35a06743f6e12091203ef0b",
+  "health": "healthy",
+  "builderStopped": true,
+  "localChecks": {
+    "backend": {
+      "tests": 3217,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 97
+    },
+    "backendCheck": "passed",
+    "frontendCheck": "passed",
+    "frontendFiles": 63,
+    "frontendTestsPassed": 734
+  },
+  "liveChecks": [
+    {
+      "name": "login",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "/api/v1/auth/me",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "/api/v1/license/me",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "/api/v1/billing/payments",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "/api/v1/ui-data/ocr-pdf",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "non-admin forbidden /api/v1/license/admin/assign",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "name": "merge two PDFs",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "rotate PDF",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "split PDF",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "compress PDF",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "extract text",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "PDF to PNG",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "PDF to CBR",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "PDF to CBZ",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "encrypt PDF",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "decrypt PDF",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "watermark PDF",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "OCR",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "URL to PDF",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "PDF to DOCX",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "PDF to HTML",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "PDF to PDF/A",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "PDF to PostScript",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "reject corrupt PDF",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "name": "reject invalid rotation",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "test": "remove pages",
+      "status": 200,
+      "bytes": 1476,
+      "validPDF": true,
+      "pages": 2,
+      "passed": true
+    },
+    {
+      "test": "reorder pages",
+      "status": 200,
+      "bytes": 1811,
+      "validPDF": true,
+      "pages": 3,
+      "passed": true
+    },
+    {
+      "test": "crop",
+      "status": 200,
+      "bytes": 1339,
+      "validPDF": true,
+      "pages": 1,
+      "passed": true
+    },
+    {
+      "test": "sanitise",
+      "status": 200,
+      "bytes": 1000,
+      "validPDF": true,
+      "pages": 1,
+      "passed": true
+    },
+    {
+      "test": "repair",
+      "status": 200,
+      "bytes": 2954,
+      "validPDF": true,
+      "pages": 1,
+      "passed": true
+    },
+    {
+      "test": "flatten forms",
+      "status": 200,
+      "bytes": 1116,
+      "validPDF": true,
+      "pages": 1,
+      "passed": true
+    },
+    {
+      "test": "auto rename",
+      "status": 200,
+      "bytes": 1116,
+      "validPDF": true,
+      "pages": 1,
+      "passed": true
+    },
+    {
+      "test": "directory isolation",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "non-admin license assignment forbidden",
+      "status": 403,
+      "passed": true
+    },
+    {
+      "test": "watermark with None",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "watermark with ''",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "watermark with ' '",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "short password rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "test": "invalid email rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "test": "duplicate case-insensitive email rejected",
+      "status": 400,
+      "passed": true
+    },
+    {
+      "test": "direct SPA navigation /settings/plan",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "direct SPA navigation /settings/account",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "direct SPA navigation /rotate",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "direct SPA navigation /files",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "direct SPA navigation /billing/halyk/00000000-0000-0000-0000-000000000000",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "direct SPA navigation /workflow/sign/test-token",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "anonymous API protected /api/v1/user/users",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "test": "anonymous API protected /api/v1/billing/payments",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "test": "anonymous API protected /api/v1/license/me",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "test": "administrator directory intact",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "billing disabled pending bank",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "checkout disabled for authenticated user",
+      "status": 503,
+      "passed": true
+    },
+    {
+      "test": "anonymous checkout protected",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "test": "unknown payment inaccessible",
+      "status": 404,
+      "passed": true
+    },
+    {
+      "test": "payment history remains empty",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "test": "Halyk callback disabled",
+      "status": 503,
+      "passed": true
+    },
+    {
+      "test": "Freedom callback disabled check",
+      "status": 503,
+      "passed": true
+    },
+    {
+      "test": "Freedom callback disabled result",
+      "status": 503,
+      "passed": true
+    }
+  ],
+  "accountCleanup": {
+    "testAccountDeleted": true,
+    "originalAccounts": 8,
+    "originalAccountFingerprintMatches": true
+  },
+  "smtp": {
+    "tls": "verified",
+    "authentication": 235,
+    "sender": "AziralPDF <noreply@aziral.com>",
+    "newEmailSent": false
+  },
+  "billing": {
+    "provider": "HALYK_EPAY",
+    "liveEnabled": false,
+    "applePayEnabled": false,
+    "realPaymentPerformed": false
+  },
+  "browser": {
+    "uploadRotateDownload": "passed; output PDF verified",
+    "settingsDirectRefresh": "passed",
+    "mobileLoginAndSignup": {
+      "width": 375,
+      "height": 568,
+      "horizontalOverflow": false,
+      "verticalScrolling": true
+    },
+    "mobilePricing": {
+      "width": 375,
+      "height": 812,
+      "horizontalOverflow": false
+    },
+    "desktopPricing": {
+      "width": 1280,
+      "height": 900
+    },
+    "rawBillingTranslationKeys": false,
+    "yearlyPriceKZT": 19900
+  },
+  "ci": [
+    {
+      "url": "https://github.com/azirali/AziralPDF-app/actions/runs/38767868470",
+      "result": "success"
+    },
+    {
+      "url": "https://github.com/azirali/AziralPDF-app/actions/runs/38775010617",
+      "result": "success"
+    }
+  ],
+  "backup": "/opt/aziralpdf/backups/configs-before-audit-20261015.tgz",
+  "screenshots": [
+    "screenshots/pricing-desktop.jpg",
+    "screenshots/pricing-mobile.jpg"
+  ],
+  "limitations": [
+    "Live acquiring and Apple Pay require bank activation and separate acceptance testing.",
+    "No stress test or exhaustive malformed-document/device matrix.",
+    "One initial merge request timed out after deployment; the subsequent full run passed and the timeout was not reproduced.",
+    "Existing Free usage counter remains process-local and counts attempts."
+  ]
+}
